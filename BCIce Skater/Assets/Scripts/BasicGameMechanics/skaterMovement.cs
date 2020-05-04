@@ -11,6 +11,7 @@ public class skaterMovement : MonoBehaviour
     private Vector2 correctPos;
     private bool collided = false;
     private bool posSet = false;
+    public float turnDistance = 5f;
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +38,7 @@ public class skaterMovement : MonoBehaviour
             transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), correctPos, speed * Time.deltaTime); // Move Ice Skater toward correct position
         }
 
-        if (Vector2.Distance(transform.position, targetPos.transform.position) < 2 && correctInput == true) // If distance between Ice Skater and Target Pos is less than x
+        if (Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance && correctInput == true) // If distance between Ice Skater and Target Pos is less than x
         {
             pointNr++; targetPos = GameObject.Find("Point"+pointNr); // Set next point as target pos
             correctInput = false;
@@ -54,7 +55,7 @@ public class skaterMovement : MonoBehaviour
             speed = 1f;
         }
 
-        if (Vector2.Distance(transform.position, targetPos.transform.position) < 2 && !correctInput && !posSet)
+        if (Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance && !correctInput && !posSet)
         {
             correctPos = transform.position; // Save correct turn position
             posSet = true;
@@ -69,6 +70,7 @@ public class skaterMovement : MonoBehaviour
 
     void OnTriggerEnter()
     {
+        Debug.Log("test");
         collided = true;
         speed = 0.5f;
     }
