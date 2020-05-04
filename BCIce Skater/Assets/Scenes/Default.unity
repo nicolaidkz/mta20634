@@ -214,7 +214,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 80048884}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.998, y: 0.394, z: 0}
+  m_LocalPosition: {x: -2.07, y: 1.11, z: 0}
   m_LocalScale: {x: 0.213, y: 0.213, z: 0.213}
   m_Children: []
   m_Father: {fileID: 1529681517}
@@ -229,7 +229,7 @@ SphereCollider:
   m_GameObject: {fileID: 80048884}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -761,6 +761,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7659587501566038576, guid: 7cdaaa9cc4be220468a2ac65b79d7aeb,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -559
+      objectReference: {fileID: 0}
+    - target: {fileID: 7659587501566038576, guid: 7cdaaa9cc4be220468a2ac65b79d7aeb,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 315
+      objectReference: {fileID: 0}
     - target: {fileID: 7659587501642988625, guid: 7cdaaa9cc4be220468a2ac65b79d7aeb,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
@@ -1125,7 +1135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1007646947
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2139,6 +2149,16 @@ PrefabInstance:
       propertyPath: onGameTimeUpdate.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnGameTimeUpdate
       objectReference: {fileID: 0}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: fabAlarmVariability
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 1482798364}
     - target: {fileID: 1668599597581130351, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: m_Name
