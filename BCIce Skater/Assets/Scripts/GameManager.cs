@@ -195,6 +195,10 @@ public class GameManager : MonoBehaviour
         gameTimers.interTrialTimer = interTrialTimer;
         gameTimers.inputWindowTimer = inputWindowTimer;
         onGameTimeUpdate.Invoke(gameTimers);
+        if (Player.GetComponent<skaterMovement>().timeToReachTarget != interTrialIntervalSeconds + inputWindowSeconds)
+        {
+            onGameStateChanged.Invoke(createGameData());
+        }
     }
 
     public void setFabAlarmVariability() {
@@ -368,7 +372,7 @@ public class GameManager : MonoBehaviour
                     } else if (inputData.validity == InputValidity.Accepted) {
                         currentInputDecision  = InputTypes.AcceptAllInput;
                         Debug.Log("Case: StrictOperation, Correct Sequence Played.");
-                        CloseInputWindow();
+                        //CloseInputWindow();
                     } else if (inputData.validity == InputValidity.Rejected) {
                         currentInputDecision  = InputTypes.RejectAllInput;
                         Debug.Log("Case: StrictOperation, Input Incorrect."); // + System.Enum.GetName(typeof(SequenceSpeed), sequenceData.sequenceSpeed) + ", " + System.Enum.GetName(typeof(SequenceComposition), sequenceData.sequenceComposition));
@@ -378,7 +382,7 @@ public class GameManager : MonoBehaviour
                     if (inputData.validity == InputValidity.Accepted) {
                         currentInputDecision = InputTypes.AcceptAllInput;       // INPUT ACCEPTED HERE
                         Player.SendMessage("bciActivated");
-                        CloseInputWindow();
+                        //CloseInputWindow();
                     } else if (inputData.validity == InputValidity.Accepted) {
                         // Recycles the AcceptAllInput
                         currentInputDecision = InputTypes.RejectAllInput;
