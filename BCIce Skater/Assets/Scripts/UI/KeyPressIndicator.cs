@@ -19,29 +19,42 @@ public class KeyPressIndicator : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ColorKey(KeyCode keypressed, string state)
     {
-        if (Input.GetButton("Q"))
+        if (keypressed == KeyCode.T && state == "keypressed")
             keys[0].GetComponent<SpriteRenderer>().color = Color.gray;
-        else
+        else if (keypressed == KeyCode.T && state == "rejected")
+            keys[0].GetComponent<SpriteRenderer>().color = Color.red;
+        else if (keypressed == KeyCode.T && state == "accepted")
+            keys[0].GetComponent<SpriteRenderer>().color = Color.green;
+        else if (state == "reset")
             keys[0].GetComponent<SpriteRenderer>().color = Origincolor[0];
 
-        if (Input.GetButton("W"))
+        if (keypressed == KeyCode.Y && state == "keypressed")
             keys[1].GetComponent<SpriteRenderer>().color = Color.gray;
-        else
+        else if (keypressed == KeyCode.Y && state == "rejected")
+            keys[1].GetComponent<SpriteRenderer>().color = Color.red;
+        else if (keypressed == KeyCode.Y && state == "accepted")
+            keys[1].GetComponent<SpriteRenderer>().color = Color.green;
+        else if (state == "reset")
             keys[1].GetComponent<SpriteRenderer>().color = Origincolor[1];
 
-        if (Input.GetButton("E"))
+        if (keypressed == KeyCode.U && state == "keypressed")
             keys[2].GetComponent<SpriteRenderer>().color = Color.gray;
-        else
+        else if (keypressed == KeyCode.U && state == "rejected")
+            keys[2].GetComponent<SpriteRenderer>().color = Color.red;
+        else if (keypressed == KeyCode.U && state == "accepted")
+            keys[2].GetComponent<SpriteRenderer>().color = Color.green;
+        else if (state == "reset")
             keys[2].GetComponent<SpriteRenderer>().color = Origincolor[2];
 
-        if (Input.GetButton("R"))
+        if (keypressed == KeyCode.I && state == "keypressed")
             keys[3].GetComponent<SpriteRenderer>().color = Color.gray;
-        else
+        else if (keypressed == KeyCode.I && state == "rejected")
+            keys[3].GetComponent<SpriteRenderer>().color = Color.red;
+        else if (keypressed == KeyCode.I && state == "accepted")
+            keys[3].GetComponent<SpriteRenderer>().color = Color.green;
+        else if (state == "reset")
             keys[3].GetComponent<SpriteRenderer>().color = Origincolor[3];
-
-
     }
 }

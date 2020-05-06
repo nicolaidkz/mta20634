@@ -48,9 +48,9 @@ public enum SequenceWindowClosure {
     ClosedByInputThreshold,
 }
 
-
 public class KeySquenceInput : MonoBehaviour
 {
+    public GameObject keySequencerGui;
 
     [SerializeField]
     private float sequenceTimeLimit_ms = 1.5f; // the longest time that the sequence may take (500 ms time limit)
@@ -102,8 +102,10 @@ public class KeySquenceInput : MonoBehaviour
     public OnKeyDown onKeyDown;
 
     // Start is called before the first frame update
+
     void Start()
     {
+
         sequenceNumber = 0;
         lastKey = KeyCode.None;
         CreateNewSequenceLogs();
@@ -244,9 +246,13 @@ public class KeySquenceInput : MonoBehaviour
                     // If we detect a new key, but its the same as the previous key, then discard it.
                     return;
                 }
+
+                keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(e.keyCode, "keypressed");
+
                 Debug.Log("Key is " + e.keyCode.ToString());
                 // TODO: Log EventType.KeyUp too
                 Debug.Log("Detected key code: " + e.keyCode + " time:" + time_ms);
+
                 currentKeySequenceLogs["Date"].Add(System.DateTime.Now.ToString("yyyy-MM-dd"));
                 currentKeySequenceLogs["Timestamp"].Add(System.DateTime.Now.ToString("HH:mm:ss.ffff"));
                 currentKeySequenceLogs["Event"].Add("KeyDown");
@@ -298,6 +304,10 @@ public class KeySquenceInput : MonoBehaviour
                 currentKeySequenceLogs["KeyType"][i]  = "CorrectKey";
                 currentKeySequenceLogs["ExpectedKey1"][i] = keysToPress[i,0].ToString();
                 currentKeySequenceLogs["ExpectedKey2"][i] = keysToPress[i,1].ToString();
+
+                keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(keysToPress[i, 0], "accepted");
+                keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(keysToPress[i, 1], "accepted");
+
             } else {
                 // if any keys do not match the desired key, reject it.
                 sequenceData.sequenceComposition = SequenceComposition.Mistyped;
@@ -306,6 +316,9 @@ public class KeySquenceInput : MonoBehaviour
                 currentKeySequenceLogs["KeyType"][i] = "WrongKey";
                 currentKeySequenceLogs["ExpectedKey1"][i] = keysToPress[i,0].ToString();
                 currentKeySequenceLogs["ExpectedKey2"][i] = keysToPress[i,1].ToString();
+
+                keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(keysToPress[i, 0], "rejected");
+                keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(keysToPress[i, 1], "rejected");
             }
             
         }
@@ -315,15 +328,25 @@ public class KeySquenceInput : MonoBehaviour
         if (sequenceTime_ms > sequenceTimeLimit_ms) {
             sequenceData.sequenceSpeed = SequenceSpeed.Slow;
             sequenceData.sequenceValidity = SequenceValidity.Rejected;
+
+            //keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(KeyCode.Dollar,"reset");
+
         }
 
         // If the sequence contains too many keys, reject it.
         if (currentKeySequenceLogs["Event"].Count > keysToPress.GetLength(0)) {
             sequenceData.sequenceComposition = SequenceComposition.Mistyped;
             sequenceData.sequenceValidity = SequenceValidity.Rejected;
-        } else if (currentKeySequenceLogs["Event"].Count < keysToPress.GetLength(0)) {
+
+            //keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(KeyCode.Dollar, "reset");
+
+        }
+        else if (currentKeySequenceLogs["Event"].Count < keysToPress.GetLength(0)) {
             sequenceData.sequenceSpeed = SequenceSpeed.Slow;
             sequenceData.sequenceValidity = SequenceValidity.Rejected;
+
+            //keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(KeyCode.Dollar, "reset");
+
         }
 
         for (int j = 0; j < currentKeySequenceLogs["Event"].Count; j++) {
@@ -334,6 +357,7 @@ public class KeySquenceInput : MonoBehaviour
             currentKeySequenceLogs["SequenceType"].Add(System.Enum.GetName(typeof(SequenceType), sequenceData.sequenceType));
             currentKeySequenceLogs["SequenceWindowClosure"].Add(System.Enum.GetName(typeof(SequenceWindowClosure), sequenceData.sequenceWindowClosure));
         }
+
         currentKeySequenceLogs["Event"].Add("KeySequenceStopped");
         currentKeySequenceLogs["Date"].Add(System.DateTime.Now.ToString("yyyy-MM-dd"));
         currentKeySequenceLogs["Timestamp"].Add(System.DateTime.Now.ToString("HH:mm:ss.ffff"));
