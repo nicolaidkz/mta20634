@@ -77,7 +77,7 @@ public enum GamePolicy {
 
 public class GameManager : MonoBehaviour
 {
-
+    private GameObject player;
     // TODO for the future: Fixate fabricated input 1 second, 2 second, 3 second after the input attempt.
     //public enum FabInputDistance {
     //    TwoSecs,
@@ -157,6 +157,7 @@ public class GameManager : MonoBehaviour
         designedInputOrder = new List<InputTypes>();
         actualInputOrder = new List<InputTypes>();
         UpdateDesignedInputOrder();
+        player = GameObject.Find("Player");
 
     }
 
@@ -266,6 +267,7 @@ public class GameManager : MonoBehaviour
         gameState = GameState.Running;
         GameData gameData = createGameData();
         onGameStateChanged.Invoke(gameData);
+        player.GetComponent<skaterMovement>().enabled = true;
 
     }
 

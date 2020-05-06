@@ -1882,13 +1882,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1482798364}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cef3e3b58523cb44ea7f0a95d43cf8ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
   distancetoIncorrect: 3
+  timeToReachTarget: 0
+  timeofWindow: 0
 --- !u!54 &1482798367
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2775,6 +2777,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
+      propertyPath: onGameStateChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
       propertyPath: onGameStateChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 313314041}
@@ -2853,6 +2860,36 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 1482798364}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: onGameStateChanged.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: onGameStateChanged.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: onGameStateChanged.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 1482798366}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: onGameStateChanged.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: OnGameStateChanged
+      objectReference: {fileID: 0}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: onGameStateChanged.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: interTrialIntervalSeconds
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130351, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: m_Name
