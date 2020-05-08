@@ -386,7 +386,7 @@ public class GameManager : MonoBehaviour
                         //CloseInputWindow();
                     } else if (inputData.validity == InputValidity.Accepted) {
                         // Recycles the AcceptAllInput
-                        currentInputDecision = InputTypes.RejectAllInput;
+                        currentInputDecision = InputTypes.RejectAllInput;       // BUG? REJECTS ALL INPUT IMMEDIATELY AFTER ACCEPTING INPUT
                     }
                     Debug.Log("Case: MeetDesignGoals, We should Accept this input if it is valid.");
                 } else if (designedInputOrder.First() == InputTypes.RejectAllInput) {

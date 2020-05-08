@@ -1949,6 +1949,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 578925667772370737, guid: 2f0076a6388e28a4196c402fc401f5f1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 578925667772370738, guid: 2f0076a6388e28a4196c402fc401f5f1,
         type: 3}
       propertyPath: m_Name
@@ -2089,6 +2094,49 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1599748590
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1599748592}
+  - component: {fileID: 1599748591}
+  m_Layer: 0
+  m_Name: DifficultyAdjuster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1599748591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599748590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b87b9f4deb118a4b92c0efd53c9b90e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1599748592
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599748590}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 24.400558, y: -17.58231, z: -20.262463}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1763844136
 GameObject:
   m_ObjectHideFlags: 0
@@ -2706,6 +2754,31 @@ PrefabInstance:
         type: 3}
       propertyPath: numberOfPoints
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: trials
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: gameDecision.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1599748591}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: gameDecision.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnGameDecision
+      objectReference: {fileID: 0}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: fabInputRate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: recognitionRate
+      value: 1.13
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130351, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
