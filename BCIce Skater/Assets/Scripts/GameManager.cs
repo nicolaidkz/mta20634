@@ -440,11 +440,10 @@ public class GameManager : MonoBehaviour
     }
 
     private Vector3 pointCoords = new Vector3(4.8f, -10, 0);
-    public int numberOfPoints;
 
     public void createPoints()
     {
-        for (int i = 2; i < numberOfPoints + 1; i++)
+        for (int i = 2; i < trials + 1; i++)
         {
             var go = new GameObject("Point"+i);
             GameObject.Find("Point" + i).transform.parent = GameObject.Find("Points").transform;
