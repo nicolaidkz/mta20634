@@ -158,6 +158,7 @@ public class GameManager : MonoBehaviour
         actualInputOrder = new List<InputTypes>();
         UpdateDesignedInputOrder();
         player = GameObject.Find("Player");
+        createPoints();
 
     }
 
@@ -436,6 +437,22 @@ public class GameManager : MonoBehaviour
         interTrialIntervalSeconds = time;
         GameData gameData = createGameData();
         onGameStateChanged.Invoke(gameData);
+    }
+
+    private Vector3 pointCoords = new Vector3(4.8f, -10, 0);
+    public int numberOfPoints;
+
+    public void createPoints()
+    {
+        for (int i = 2; i < numberOfPoints + 1; i++)
+        {
+            var go = new GameObject("Point"+i);
+            GameObject.Find("Point" + i).transform.parent = GameObject.Find("Points").transform;
+            GameObject.Find("Point"+i).transform.position = pointCoords;
+            pointCoords += new Vector3(0, -10, 0);
+            pointCoords.x *= -1;
+        }
+   
     }
 
 }
