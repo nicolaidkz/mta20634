@@ -17,7 +17,7 @@ public class SequenceData {
 
 public enum SequenceType {
     HKJL, // HK + J + L
-    TYUI, // T + YI + U
+    QWER, // Q + WE + R
     TRWE,  // TR + W + E
     XCVB, // X + C + VB
 }
@@ -77,7 +77,6 @@ public class KeySquenceInput : MonoBehaviour
     private float timeSinceLastPress_ms = 0f;
     private float sequenceTime_ms = 0f;
     private float deadzoneTime_ms = 0f;
-    
 
     private KeyCode lastKey;
     private KeyCode lastKey2;
@@ -87,7 +86,8 @@ public class KeySquenceInput : MonoBehaviour
     string sep = ",";
     int sequenceNumber = 0;
 
-
+    private bool success = true; //you succeed by default, but a lot of conditions fail you
+    private bool taskDone = false;
 
     [Serializable]
     public class OnKeySequenceFinished : UnityEvent<SequenceData, InputData> { }
@@ -122,15 +122,15 @@ public class KeySquenceInput : MonoBehaviour
             keysToPress[3,1] = KeyCode.None;
         }
 
-        if (keyboardSequence == SequenceType.TYUI) { // T + YU + I
+        if (keyboardSequence == SequenceType.QWER) { // Q + WE + R
             keysToPress = new KeyCode[4,2]; // 3 sequences, up to 2 keys simultaneously.
-            keysToPress[0,0] = KeyCode.T; // In Slot 0 and 1 we check for both H or K keys 
+            keysToPress[0,0] = KeyCode.Q; // In Slot 0 and 1 we check for both H or K keys 
             keysToPress[0,1] = KeyCode.None;
-            keysToPress[1,0] = KeyCode.Y;
-            keysToPress[1,1] = KeyCode.I;
-            keysToPress[2,0] = KeyCode.Y;
-            keysToPress[2,1] = KeyCode.I;
-            keysToPress[3,0] = KeyCode.U;
+            keysToPress[1,0] = KeyCode.W;
+            keysToPress[1,1] = KeyCode.E;
+            keysToPress[2,0] = KeyCode.W;
+            keysToPress[2,1] = KeyCode.E;
+            keysToPress[3,0] = KeyCode.R;
             keysToPress[3,1] = KeyCode.None;
         }
 
@@ -156,7 +156,7 @@ public class KeySquenceInput : MonoBehaviour
             keysToPress[2,1] = KeyCode.B;
             keysToPress[3,0] = KeyCode.V;
             keysToPress[3,1] = KeyCode.B;
-        }   
+        }
 
     }
 
@@ -229,44 +229,51 @@ public class KeySquenceInput : MonoBehaviour
         }
     }
 
-
     void OnGUI()
     {
-        Event e = Event.current;
-        if (e == null) {
-            return;
-        }
-        if (e.isKey)
+        if(!taskDone)
         {
-            if (e.keyCode == KeyCode.None) {
+            Event e = Event.current;
+            if (e == null)
+            {
                 return;
             }
-            if (Event.current.type == EventType.KeyDown) {
-                if (e.keyCode == lastKey || e.keyCode == lastKey2) {
-                    // If we detect a new key, but its the same as the previous key, then discard it.
+            if (e.isKey)
+            {
+                if (e.keyCode == KeyCode.None)
+                {
                     return;
                 }
+                if (Event.current.type == EventType.KeyDown)
+                {
+                    if (e.keyCode == lastKey || e.keyCode == lastKey2)
+                    {
+                        // If we detect a new key, but its the same as the previous key, then discard it.
+                        return;
+                    }
 
-                keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(e.keyCode, "keypressed");
+                    keySequencerGui.GetComponent<KeyPressIndicator>().UIKey(e.keyCode.ToString(), "instantiate");
 
-                Debug.Log("Key is " + e.keyCode.ToString());
-                // TODO: Log EventType.KeyUp too
-                Debug.Log("Detected key code: " + e.keyCode + " time:" + time_ms);
 
-                currentKeySequenceLogs["Date"].Add(System.DateTime.Now.ToString("yyyy-MM-dd"));
-                currentKeySequenceLogs["Timestamp"].Add(System.DateTime.Now.ToString("HH:mm:ss.ffff"));
-                currentKeySequenceLogs["Event"].Add("KeyDown");
-                currentKeySequenceLogs["KeyCode"].Add(e.keyCode.ToString());
-                currentKeySequenceLogs["SequenceTime_ms"].Add(sequenceTime_ms.ToString());
-                currentKeySequenceLogs["TimeSinceLastKey_ms"].Add(timeSinceLastPress_ms.ToString());
-                timeSinceLastPress_ms = 0f;
-                sequenceState = SequenceState.Playing;
-                deadzoneTime_ms = 0f;
-                lastKey2 = lastKey;
-                lastKey = e.keyCode;
-                onKeyDown.Invoke(e.keyCode);
+                    //Debug.Log("Key is " + e.keyCode.ToString());
+                    // TODO: Log EventType.KeyUp too
+                    //Debug.Log("Detected key code: " + e.keyCode + " time:" + time_ms);
+
+                    currentKeySequenceLogs["Date"].Add(System.DateTime.Now.ToString("yyyy-MM-dd"));
+                    currentKeySequenceLogs["Timestamp"].Add(System.DateTime.Now.ToString("HH:mm:ss.ffff"));
+                    currentKeySequenceLogs["Event"].Add("KeyDown");
+                    currentKeySequenceLogs["KeyCode"].Add(e.keyCode.ToString());
+                    currentKeySequenceLogs["SequenceTime_ms"].Add(sequenceTime_ms.ToString());
+                    currentKeySequenceLogs["TimeSinceLastKey_ms"].Add(timeSinceLastPress_ms.ToString());
+                    timeSinceLastPress_ms = 0f;
+                    sequenceState = SequenceState.Playing;
+                    deadzoneTime_ms = 0f;
+                    lastKey2 = lastKey;
+                    lastKey = e.keyCode;
+                    onKeyDown.Invoke(e.keyCode);
+                }
             }
-        }
+        }  
     }
 
     private SequenceData CheckCapturedKeys() {
@@ -297,16 +304,19 @@ public class KeySquenceInput : MonoBehaviour
             }
 
             // for each i, we need to check if the first key pressed, matches either keysToPress[i,0] or [i,1]
-            Debug.Log("Checking Key: " + currentKeySequenceLogs["KeyCode"][i]);
-            Debug.Log("i = " + i + ", keysToPress: " + keysToPress.GetLength(0) + " currentKeySequenceLogs: " + currentKeySequenceLogs["KeyCode"].Count);
+            //Debug.Log("Checking Key: " + currentKeySequenceLogs["KeyCode"][i]);
+            //Debug.Log("i = " + i + ", keysToPress: " + keysToPress.GetLength(0) + " currentKeySequenceLogs: " + currentKeySequenceLogs["KeyCode"].Count);
+            Debug.Log("expected key: " + keysToPress[i, 0].ToString() + " and " + keysToPress[i, 1].ToString());
             if (currentKeySequenceLogs["KeyCode"][i] == keysToPress[i,0].ToString() || currentKeySequenceLogs["KeyCode"][i] == keysToPress[i,1].ToString()) {
                 currentKeySequenceLogs["KeyOrder"][i] = i.ToString();
                 currentKeySequenceLogs["KeyType"][i]  = "CorrectKey";
                 currentKeySequenceLogs["ExpectedKey1"][i] = keysToPress[i,0].ToString();
                 currentKeySequenceLogs["ExpectedKey2"][i] = keysToPress[i,1].ToString();
 
-                keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(keysToPress[i, 0], "accepted");
-                keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(keysToPress[i, 1], "accepted");
+                //Debug.Log("accepted");
+
+                //keySequencerGui.GetComponent<KeyPressIndicator>().UIKey("nothing", "accepted");
+
 
             } else {
                 // if any keys do not match the desired key, reject it.
@@ -317,36 +327,53 @@ public class KeySquenceInput : MonoBehaviour
                 currentKeySequenceLogs["ExpectedKey1"][i] = keysToPress[i,0].ToString();
                 currentKeySequenceLogs["ExpectedKey2"][i] = keysToPress[i,1].ToString();
 
-                keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(keysToPress[i, 0], "rejected");
-                keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(keysToPress[i, 1], "rejected");
+                //Debug.Log("failed");
+
+                //keySequencerGui.GetComponent<KeyPressIndicator>().UIKey("nothing", "failed");
+
+                // signal mistype
+                success = false;
             }
             
         }
 
         // If the sequence was played too slowly, reject it.
-        Debug.Log("sequenceTime_ms: " + sequenceTime_ms + ", sequenceTimeLimit_ms: " + sequenceTimeLimit_ms);
+        //Debug.Log("sequenceTime_ms: " + sequenceTime_ms + ", sequenceTimeLimit_ms: " + sequenceTimeLimit_ms);
         if (sequenceTime_ms > sequenceTimeLimit_ms) {
             sequenceData.sequenceSpeed = SequenceSpeed.Slow;
             sequenceData.sequenceValidity = SequenceValidity.Rejected;
 
-            //keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(KeyCode.Dollar,"reset");
-
+            success = false;
         }
+
+        Debug.Log(currentKeySequenceLogs["Event"].Count + " AND " + keysToPress.GetLength(0));
 
         // If the sequence contains too many keys, reject it.
         if (currentKeySequenceLogs["Event"].Count > keysToPress.GetLength(0)) {
             sequenceData.sequenceComposition = SequenceComposition.Mistyped;
             sequenceData.sequenceValidity = SequenceValidity.Rejected;
 
-            //keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(KeyCode.Dollar, "reset");
-
+            success = false;
         }
         else if (currentKeySequenceLogs["Event"].Count < keysToPress.GetLength(0)) {
             sequenceData.sequenceSpeed = SequenceSpeed.Slow;
             sequenceData.sequenceValidity = SequenceValidity.Rejected;
 
-            //keySequencerGui.GetComponent<KeyPressIndicator>().ColorKey(KeyCode.Dollar, "reset");
+            success = false;
+        }
 
+        if (success)
+        {
+            keySequencerGui.GetComponent<KeyPressIndicator>().UIKey("nothing", "success");
+            lastKey = KeyCode.Dollar;
+            lastKey2 = KeyCode.Dollar;
+        }
+        else
+        {
+            keySequencerGui.GetComponent<KeyPressIndicator>().UIKey("nothing", "reset");
+            success = true;
+            lastKey = KeyCode.Dollar;
+            lastKey2 = KeyCode.Dollar;
         }
 
         for (int j = 0; j < currentKeySequenceLogs["Event"].Count; j++) {

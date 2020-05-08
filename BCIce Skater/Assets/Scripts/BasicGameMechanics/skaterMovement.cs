@@ -26,7 +26,6 @@ public class skaterMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (Input.GetKeyDown("space"))
         {
             bciActivated(); // Run method for succesful BCI activation
