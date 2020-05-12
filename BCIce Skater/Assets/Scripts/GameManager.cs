@@ -77,7 +77,7 @@ public enum GamePolicy {
 
 public class GameManager : MonoBehaviour
 {
-
+    private GameObject player;
     // TODO for the future: Fixate fabricated input 1 second, 2 second, 3 second after the input attempt.
     //public enum FabInputDistance {
     //    TwoSecs,
@@ -157,6 +157,8 @@ public class GameManager : MonoBehaviour
         designedInputOrder = new List<InputTypes>();
         actualInputOrder = new List<InputTypes>();
         UpdateDesignedInputOrder();
+        player = GameObject.Find("Player");
+        createPoints();
 
     }
 
@@ -194,6 +196,10 @@ public class GameManager : MonoBehaviour
         gameTimers.interTrialTimer = interTrialTimer;
         gameTimers.inputWindowTimer = inputWindowTimer;
         onGameTimeUpdate.Invoke(gameTimers);
+        if (Player.GetComponent<skaterMovement>().timeToReachTarget != interTrialIntervalSeconds + inputWindowSeconds)
+        {
+            onGameStateChanged.Invoke(createGameData());
+        }
     }
 
     public void setFabAlarmVariability() {
@@ -266,6 +272,7 @@ public class GameManager : MonoBehaviour
         gameState = GameState.Running;
         GameData gameData = createGameData();
         onGameStateChanged.Invoke(gameData);
+        player.GetComponent<skaterMovement>().enabled = true;
 
     }
 
@@ -366,7 +373,7 @@ public class GameManager : MonoBehaviour
                     } else if (inputData.validity == InputValidity.Accepted) {
                         currentInputDecision  = InputTypes.AcceptAllInput;
                         Debug.Log("Case: StrictOperation, Correct Sequence Played.");
-                        CloseInputWindow();
+                        //CloseInputWindow();
                     } else if (inputData.validity == InputValidity.Rejected) {
                         currentInputDecision  = InputTypes.RejectAllInput;
                         Debug.Log("Case: StrictOperation, Input Incorrect."); // + System.Enum.GetName(typeof(SequenceSpeed), sequenceData.sequenceSpeed) + ", " + System.Enum.GetName(typeof(SequenceComposition), sequenceData.sequenceComposition));
@@ -376,10 +383,11 @@ public class GameManager : MonoBehaviour
                     if (inputData.validity == InputValidity.Accepted) {
                         currentInputDecision = InputTypes.AcceptAllInput;       // INPUT ACCEPTED HERE
                         Player.SendMessage("bciActivated");
-                        CloseInputWindow();
+                        GameObject.Find("DifficultyAdjuster").SendMessage("InputAccepted");
+                        //CloseInputWindow();
                     } else if (inputData.validity == InputValidity.Accepted) {
                         // Recycles the AcceptAllInput
-                        currentInputDecision = InputTypes.RejectAllInput;
+                        currentInputDecision = InputTypes.RejectAllInput;       // BUG? REJECTS ALL INPUT IMMEDIATELY AFTER ACCEPTING INPUT
                     }
                     Debug.Log("Case: MeetDesignGoals, We should Accept this input if it is valid.");
                 } else if (designedInputOrder.First() == InputTypes.RejectAllInput) {
@@ -430,6 +438,21 @@ public class GameManager : MonoBehaviour
         interTrialIntervalSeconds = time;
         GameData gameData = createGameData();
         onGameStateChanged.Invoke(gameData);
+    }
+
+    private Vector3 pointCoords = new Vector3(4.8f, -10, 0);
+
+    public void createPoints()
+    {
+        for (int i = 2; i < trials + 1; i++)
+        {
+            var go = new GameObject("Point"+i);
+            GameObject.Find("Point" + i).transform.parent = GameObject.Find("Points").transform;
+            GameObject.Find("Point"+i).transform.position = pointCoords;
+            pointCoords += new Vector3(0, -10, 0);
+            pointCoords.x *= -1;
+        }
+   
     }
 
 }

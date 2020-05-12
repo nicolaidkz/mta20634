@@ -101,7 +101,7 @@ public class LoggingManager : MonoBehaviour
         FillKeys();
 
         if (gameData.gameState == GameState.Stopped) {
-            SendLogs();
+            //SendLogs(); // TOGGLE LOGS HERE (NEEDS A CHECK OR CHANGE IN LOGIC DUE TO GAMESTATE.STOPPED)
         }
     }
 
