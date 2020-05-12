@@ -27,9 +27,12 @@ public class skaterMovement : MonoBehaviour
 
     private GameObject gameManager;
 
+    private GameObject directionSwitch;
+
     // Start is called before the first frame update
     void Start()
     {
+        directionSwitch = GameObject.Find("Player");
         gameManager = GameObject.Find("GameManager");
         startPos = target = transform.position;
         targetPos = GameObject.Find("Point" + pointNr); // Target Position Ice Skater will travel toward
@@ -96,6 +99,15 @@ public class skaterMovement : MonoBehaviour
         collided = false;
         fail = false;
         correctInput = false;
+        if (!Animations.rotate)
+        {
+            Animations.rotate = true;
+        }
+        else if (Animations.rotate)
+        {
+            Animations.rotate = false;
+        }
+        directionSwitch.GetComponent<Animations>().ToggleRotate();
         pointNr++; targetPos = GameObject.Find("Point" + pointNr); // Set next point as target pos
         incorrectPos = targetPos.transform.position + ((targetPos.transform.position - transform.position).normalized * distancetoIncorrect); // arrange incorrectPos
     }
