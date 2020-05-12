@@ -4,12 +4,12 @@ using UnityEngine.UI;
 public class KeyPressIndicator : MonoBehaviour
 {
     public GameObject[] keyPrefabs;
-    public float alpha = 0.2f;
+    public float alpha = 0.001f;
     Color darkGreen = new Color(0, 0.7f, 0, 1);
-    string keyOne = KeyCode.Q.ToString();
-    string keyTwo = KeyCode.W.ToString();
-    string keyThree = KeyCode.E.ToString();
-    string keyFour = KeyCode.R.ToString();
+    string keyOne = KeyCode.T.ToString();
+    string keyTwo = KeyCode.Y.ToString();
+    string keyThree = KeyCode.U.ToString();
+    string keyFour = KeyCode.I.ToString();
     private int numKeys = 0;
     private int maxKeys;
 
@@ -30,9 +30,9 @@ public class KeyPressIndicator : MonoBehaviour
     //Used in KeySequenceInput Script, changes color of keySequencer
     public void UIKey(string keyPressed, string action) 
     {
-        if (action == "instantiate") //when button is first clicked make a new key on screen
+        if (action == "instantiate" && numKeys <= 3) //when button is first clicked make a new key on screen
         {            
-            if (keyPressed == keyOne) //Q
+            if (keyPressed == keyOne) //T
             {
                 GameObject newPrefab = Instantiate(keyPrefabs[0], new Vector3(transform.position.x + numKeys, transform.position.y, transform.position.z), Quaternion.identity, transform.parent);
                 newPrefab.transform.parent = gameObject.transform.GetChild(1).transform;
@@ -40,8 +40,9 @@ public class KeyPressIndicator : MonoBehaviour
                 {
                     newPrefab.transform.GetChild(0).GetComponent<Text>().text = "";
                 }
+                numKeys++;
             }
-            else if (keyPressed == keyTwo) //W
+            else if (keyPressed == keyTwo) //Y
             {
                 GameObject newPrefab = Instantiate(keyPrefabs[1], new Vector3(transform.position.x + numKeys, transform.position.y, transform.position.z), Quaternion.identity, transform.parent);
                 newPrefab.transform.parent = gameObject.transform.GetChild(1).transform;
@@ -49,8 +50,9 @@ public class KeyPressIndicator : MonoBehaviour
                 {
                     newPrefab.transform.GetChild(0).GetComponent<Text>().text = "";
                 }
+                numKeys++;
             }
-            else if (keyPressed == keyThree) //E
+            else if (keyPressed == keyThree) //U
             {
                 GameObject newPrefab = Instantiate(keyPrefabs[2], new Vector3(transform.position.x + numKeys, transform.position.y, transform.position.z), Quaternion.identity, transform.parent);
                 newPrefab.transform.parent = gameObject.transform.GetChild(1).transform;
@@ -58,8 +60,9 @@ public class KeyPressIndicator : MonoBehaviour
                 {
                     newPrefab.transform.GetChild(0).GetComponent<Text>().text = "";
                 }
+                numKeys++;
             }
-            else if (keyPressed == keyFour) //R
+            else if (keyPressed == keyFour) //I
             {
                 GameObject newPrefab = Instantiate(keyPrefabs[3], new Vector3(transform.position.x + numKeys, transform.position.y, transform.position.z), Quaternion.identity, transform.parent);
                 newPrefab.transform.parent = gameObject.transform.GetChild(1).transform;
@@ -67,20 +70,13 @@ public class KeyPressIndicator : MonoBehaviour
                 {
                     newPrefab.transform.GetChild(0).GetComponent<Text>().text = "";
                 }
+                numKeys++;
             }
-            numKeys++;
+
         }
 
         if (transform.GetChild(1).childCount > 0)
         {
-            if (action == "accepted")
-            {
-                transform.GetChild(1).GetChild(numKeys - 1).GetComponent<SpriteRenderer>().color = Color.green;
-            }
-            else if (action == "failed")
-            {
-                transform.GetChild(1).GetChild(numKeys - 1).GetComponent<SpriteRenderer>().color = Color.red;
-            }
 
             if (action == "reset")
             {

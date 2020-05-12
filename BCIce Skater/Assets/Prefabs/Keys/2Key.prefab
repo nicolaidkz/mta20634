@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 5660473696114198150}
   - component: {fileID: 5660473696114198151}
   m_Layer: 5
-  m_Name: WText
+  m_Name: YText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,4 +158,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: W
+  m_Text: Y

@@ -17,7 +17,7 @@ public class SequenceData {
 
 public enum SequenceType {
     HKJL, // HK + J + L
-    QWER, // Q + WE + R
+    TYUI, // T + YU + I
     TRWE,  // TR + W + E
     XCVB, // X + C + VB
 }
@@ -122,15 +122,15 @@ public class KeySquenceInput : MonoBehaviour
             keysToPress[3,1] = KeyCode.None;
         }
 
-        if (keyboardSequence == SequenceType.QWER) { // Q + WE + R
+        if (keyboardSequence == SequenceType.TYUI) { // T + YU + I
             keysToPress = new KeyCode[4,2]; // 3 sequences, up to 2 keys simultaneously.
-            keysToPress[0,0] = KeyCode.Q; // In Slot 0 and 1 we check for both H or K keys 
+            keysToPress[0,0] = KeyCode.T; // In Slot 0 and 1 we check for both H or K keys 
             keysToPress[0,1] = KeyCode.None;
-            keysToPress[1,0] = KeyCode.W;
-            keysToPress[1,1] = KeyCode.E;
-            keysToPress[2,0] = KeyCode.W;
-            keysToPress[2,1] = KeyCode.E;
-            keysToPress[3,0] = KeyCode.R;
+            keysToPress[1,0] = KeyCode.Y;
+            keysToPress[1,1] = KeyCode.U;
+            keysToPress[2,0] = KeyCode.Y;
+            keysToPress[2,1] = KeyCode.U;
+            keysToPress[3,0] = KeyCode.I;
             keysToPress[3,1] = KeyCode.None;
         }
 
@@ -146,7 +146,7 @@ public class KeySquenceInput : MonoBehaviour
             keysToPress[3,1] = KeyCode.None;
         }        
 
-        if (keyboardSequence == SequenceType.XCVB) { // SR + W + E
+        if (keyboardSequence == SequenceType.XCVB) { // S + W + WE
             keysToPress = new KeyCode[4,2]; // 3 sequences, up to 2 keys simultaneously.
             keysToPress[0,0] = KeyCode.X; // In Slot 0 and 1 we check for both H or K keys 
             keysToPress[0,1] = KeyCode.None;
@@ -304,8 +304,8 @@ public class KeySquenceInput : MonoBehaviour
             }
 
             // for each i, we need to check if the first key pressed, matches either keysToPress[i,0] or [i,1]
-            //Debug.Log("Checking Key: " + currentKeySequenceLogs["KeyCode"][i]);
-            //Debug.Log("i = " + i + ", keysToPress: " + keysToPress.GetLength(0) + " currentKeySequenceLogs: " + currentKeySequenceLogs["KeyCode"].Count);
+            Debug.Log("Checking Key: " + currentKeySequenceLogs["KeyCode"][i]);
+            Debug.Log("i = " + i + ", keysToPress: " + keysToPress.GetLength(0) + " currentKeySequenceLogs: " + currentKeySequenceLogs["KeyCode"].Count);
             Debug.Log("expected key: " + keysToPress[i, 0].ToString() + " and " + keysToPress[i, 1].ToString());
             if (currentKeySequenceLogs["KeyCode"][i] == keysToPress[i,0].ToString() || currentKeySequenceLogs["KeyCode"][i] == keysToPress[i,1].ToString()) {
                 currentKeySequenceLogs["KeyOrder"][i] = i.ToString();
@@ -338,7 +338,7 @@ public class KeySquenceInput : MonoBehaviour
         }
 
         // If the sequence was played too slowly, reject it.
-        //Debug.Log("sequenceTime_ms: " + sequenceTime_ms + ", sequenceTimeLimit_ms: " + sequenceTimeLimit_ms);
+        Debug.Log("sequenceTime_ms: " + sequenceTime_ms + ", sequenceTimeLimit_ms: " + sequenceTimeLimit_ms);
         if (sequenceTime_ms > sequenceTimeLimit_ms) {
             sequenceData.sequenceSpeed = SequenceSpeed.Slow;
             sequenceData.sequenceValidity = SequenceValidity.Rejected;
@@ -365,8 +365,10 @@ public class KeySquenceInput : MonoBehaviour
         if (success)
         {
             keySequencerGui.GetComponent<KeyPressIndicator>().UIKey("nothing", "success");
+            taskDone = true;
             lastKey = KeyCode.Dollar;
             lastKey2 = KeyCode.Dollar;
+            Debug.Log("Done");
         }
         else
         {

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7187865769637070559}
   - component: {fileID: 7187865769637070558}
   m_Layer: 5
-  m_Name: QText
+  m_Name: TText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Q
+  m_Text: T
 --- !u!1 &7187865769838440399
 GameObject:
   m_ObjectHideFlags: 0
