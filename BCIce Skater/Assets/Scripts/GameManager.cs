@@ -383,6 +383,7 @@ public class GameManager : MonoBehaviour
                     if (inputData.validity == InputValidity.Accepted) {
                         currentInputDecision = InputTypes.AcceptAllInput;       // INPUT ACCEPTED HERE
                         Player.SendMessage("bciActivated");
+                        GameObject.Find("DifficultyAdjuster").SendMessage("InputAccepted");
                         //CloseInputWindow();
                     } else if (inputData.validity == InputValidity.Accepted) {
                         // Recycles the AcceptAllInput

@@ -8,16 +8,26 @@ public class speedAdjustment : MonoBehaviour
     public AdjustmentType Scenario;
 
     List <float> trialHistory = new List<float>();
-    public void OnGameDecision(GameDecisionData decisionData) 
+    //public void OnGameDecision(GameDecisionData decisionData) 
+    //{
+    //    // this is where we get an update on the latest result of a trial.
+    //    Debug.Log("this is the decision from speedAdjustment: " + decisionData.decision);
+    //    float precision = 0f;
+    //    if (decisionData.decision == InputTypes.AcceptAllInput) precision = 1f; // precision here needs to be based on the time since window start...
+    //    AddTrialEntry(precision);
+    //}
+
+
+    public void InputAccepted() 
     {
-        // this is where we get an update on the latest result of a trial.
-        Debug.Log("this is the decision from speedAdjustment: " + decisionData.decision);
-        float precision = 0f;
-        if (decisionData.decision == InputTypes.AcceptAllInput) precision = 1f; // precision here needs to be based on the time since window start...
+        float precision = 1f;
         AddTrialEntry(precision);
     }
-
-
+    public void InputRejected()
+    {
+        float precision = 0f;
+        AddTrialEntry(precision);
+    }
     void AddTrialEntry(float input)
     {
         trialHistory.Add(input);
@@ -33,13 +43,18 @@ public class speedAdjustment : MonoBehaviour
 
                 Debug.Log("Adjusting speed Constant based on: " + lastTrialPrecision);
                     break;
+
             case AdjustmentType.Staggered:
                 float[] lastTrialPrecisions = new float[3]; // last three precisions for comparison
-                for (int i = 0; i < 3; i++)
+                if (trialHistory.Count >= 3)
                 {
-                    lastTrialPrecisions[i] = trialHistory[trialHistory.Count - (1 + i)];
+                    for (int i = 0; i < 3; i++)
+                    {
+                        lastTrialPrecisions[i] = trialHistory[trialHistory.Count - (1 + i)];
+                    }
+                    Debug.Log("Adjusting Speed Staggered based on: " + lastTrialPrecisions[0] + lastTrialPrecisions[1] + lastTrialPrecisions[2]);
                 }
-                Debug.Log("Adjusting Speed Staggered based on: " + lastTrialPrecisions[0] + lastTrialPrecisions[1] + lastTrialPrecisions[2]);
+                else Debug.Log("staggering speed adjustment..");
                     break;
             default:
                 Debug.Log("Error with adjustment type: " + Scenario.ToString());

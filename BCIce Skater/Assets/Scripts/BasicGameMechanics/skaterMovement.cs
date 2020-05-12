@@ -64,8 +64,8 @@ public class skaterMovement : MonoBehaviour
             fail = true;
             SetDestination(incorrectPos, 2);
             check2 = true;
-            gameManager.SendMessage("ResetTrial");
             gameManager.SendMessage("PauseTrial");
+            GameObject.Find("DifficultyAdjuster").SendMessage("InputRejected");
         }
         if ((Vector2.Distance(transform.position, incorrectPos) < turnDistance && fail && !check3) || (collided && !check3))
         {
