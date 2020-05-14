@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
     private InputWindowState inputWindow = InputWindowState.Closed;
 
     [SerializeField]
-    private float interTrialIntervalSeconds = 4.5f;
+    public float interTrialIntervalSeconds = 4.5f;
     [SerializeField]
     private float inputWindowSeconds = 1f;
     private float inputWindowTimer = 0.0f;
@@ -383,11 +383,13 @@ public class GameManager : MonoBehaviour
                     if (inputData.validity == InputValidity.Accepted) {
                         currentInputDecision = InputTypes.AcceptAllInput;       // INPUT ACCEPTED HERE
                         Player.SendMessage("bciActivated");
-                        GameObject.Find("DifficultyAdjuster").SendMessage("InputAccepted");
+                        Debug.Log("Correct sequence at: " + inputWindowTimer);
+                        GameObject.Find("DifficultyAdjuster").SendMessage("InputAccepted", inputWindowTimer);
                         //CloseInputWindow();
                     } else if (inputData.validity == InputValidity.Accepted) {
                         // Recycles the AcceptAllInput
                         currentInputDecision = InputTypes.RejectAllInput;       // BUG? REJECTS ALL INPUT IMMEDIATELY AFTER ACCEPTING INPUT
+                        GameObject.Find("DifficultyAdjuster").SendMessage("InputRejected");
                     }
                     Debug.Log("Case: MeetDesignGoals, We should Accept this input if it is valid.");
                 } else if (designedInputOrder.First() == InputTypes.RejectAllInput) {
@@ -403,6 +405,7 @@ public class GameManager : MonoBehaviour
             // then we submit a Rejection.
             currentInputDecision = InputTypes.RejectAllInput;
             Debug.Log("Case: Input Window Expired, Rejecting.");
+
             CloseInputWindow();
         } else if (inputData == null && designedInputOrder.First() == InputTypes.FabInput) {
             // if this is in response to an alarm that we dont receive any input,

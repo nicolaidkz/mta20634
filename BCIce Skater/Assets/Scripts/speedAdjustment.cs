@@ -5,9 +5,10 @@ using UnityEngine;
 public class speedAdjustment : MonoBehaviour
 {
     public enum AdjustmentType { Constant, Staggered }
+    public float decreaseT = 1.8f, increaseT = 0.5f;
+    public float unit = 0.5f;
     public AdjustmentType Scenario;
-
-    List <float> trialHistory = new List<float>();
+    List<float> trialHistory = new List<float>();
     //public void OnGameDecision(GameDecisionData decisionData) 
     //{
     //    // this is where we get an update on the latest result of a trial.
@@ -18,9 +19,9 @@ public class speedAdjustment : MonoBehaviour
     //}
 
 
-    public void InputAccepted() 
+    public void InputAccepted(float timeSinceWindowStart)
     {
-        float precision = 1f;
+        float precision = timeSinceWindowStart;
         AddTrialEntry(precision);
     }
     public void InputRejected()
@@ -39,10 +40,35 @@ public class speedAdjustment : MonoBehaviour
         switch (Scenario)
         {
             case AdjustmentType.Constant:
-                float lastTrialPrecision = trialHistory[trialHistory.Count-1]; // last trial precision for comparison
+                float lastTrialPrecision = trialHistory[trialHistory.Count - 1]; // last trial precision for comparison
+                if (lastTrialPrecision != 0)
+                {
+                    if (lastTrialPrecision < increaseT)
+                    {
+                        Debug.Log("increase!");
+                        if (GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds - unit >= 5)
+                        {
+                            GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds -= unit;
+                        }
+                    }
+                    else if (lastTrialPrecision > decreaseT)
+                    {
+                        Debug.Log("within parameters, no changes made");
+                    }
 
-                Debug.Log("Adjusting speed Constant based on: " + lastTrialPrecision);
                     break;
+                }
+                else 
+                {
+                    Debug.Log("Window Expired");
+                    Debug.Log("decrease!");
+                    if (GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds + unit <= 10)
+                    {
+                        GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds += unit;
+                    }
+                    break;
+                }
+                
 
             case AdjustmentType.Staggered:
                 float[] lastTrialPrecisions = new float[3]; // last three precisions for comparison
@@ -53,19 +79,30 @@ public class speedAdjustment : MonoBehaviour
                         lastTrialPrecisions[i] = trialHistory[trialHistory.Count - (1 + i)];
                     }
                     Debug.Log("Adjusting Speed Staggered based on: " + lastTrialPrecisions[0] + lastTrialPrecisions[1] + lastTrialPrecisions[2]);
+                    // if the average of three trials are below a certain threshold, increase the speed by UNIT*3
+                    if (AverageBetween(lastTrialPrecisions[0], lastTrialPrecisions[1], lastTrialPrecisions[2]) < increaseT) { }
+                    // if the average of three  trials are above a certain threshold, lower the speed by UNIT*3
+                    else if (AverageBetween(lastTrialPrecisions[0], lastTrialPrecisions[1], lastTrialPrecisions[2]) > decreaseT) { }
+                    // else (if between thresholds) leave the poor speed alone
+                    else { Debug.Log("average within parameters, no changes made"); }
                 }
                 else Debug.Log("staggering speed adjustment..");
-                    break;
+                // we are still logging three trials before making a decision.
+                break;
             default:
                 Debug.Log("Error with adjustment type: " + Scenario.ToString());
-                    break;
+                // this part of the code is unreachable, if you see this error message, get to a phone!
+                break;
         }
 
 
     }
+
+    float AverageBetween(float one, float two, float three)
+    {
+        return one + two + three / 3; // BASS!
+    }
 }
 
 
-/* TODO:    
-            MAKE THE GAMEMANAGER SERVE US THE TIME SINCE WINDOW STARTED WHEN THE PLAYER HAS COMPLETED A TRIAL, SO WE CAN USE THAT AS PRECISION
-            FINALLY, CHANGE THE INTERTRIALINTERVALSECONDS IN GAMEMANAGER BASED ON THE ADJUSTMENT TYPE CHOSEN*/
+/* TODO:     FINALLY, CHANGE THE INTERTRIALINTERVALSECONDS IN GAMEMANAGER BASED ON THE ADJUSTMENT TYPE CHOSEN*/
