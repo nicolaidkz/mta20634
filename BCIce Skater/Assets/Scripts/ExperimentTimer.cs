@@ -45,7 +45,7 @@ public class ExperimentTimer : MonoBehaviour
 
     public void ResetTimer() {
         startTimer = false;
-        timerText.text = timerTextTemplate;
+        //timerText.text = timerTextTemplate;
         experimentEnd = System.DateTime.Now;
     }
 }

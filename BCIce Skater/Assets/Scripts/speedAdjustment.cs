@@ -46,9 +46,11 @@ public class speedAdjustment : MonoBehaviour
                     if (lastTrialPrecision < increaseT)
                     {
                         Debug.Log("increase!");
-                        if (GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds - unit >= 5)
+                        float ItIs = GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds;
+                        if (ItIs - unit >= 5)
                         {
                             GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds -= unit;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (ItIs - unit));
                         }
                     }
                     else if (lastTrialPrecision > decreaseT)
@@ -62,9 +64,11 @@ public class speedAdjustment : MonoBehaviour
                 {
                     Debug.Log("Window Expired");
                     Debug.Log("decrease!");
-                    if (GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds + unit <= 10)
+                    float ItIs = GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds;
+                    if (ItIs + unit <= 10)
                     {
                         GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds += unit;
+                        GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (ItIs + unit));
                     }
                     break;
                 }

@@ -11,7 +11,7 @@ public class skaterMovement : MonoBehaviour
     private bool correctInput = false; // To keep track of correct BCI input
     private Vector3 incorrectPos;
     private bool collided = false;
-    private float turnDistance = 0.1f;
+    private float turnDistance = 0.001f;
     private bool fail = false;
 
     public float distancetoIncorrect = 3;
@@ -124,10 +124,15 @@ public class skaterMovement : MonoBehaviour
         incorrectPos = targetPos.transform.position + ((targetPos.transform.position - transform.position).normalized * distancetoIncorrect); // arrange incorrectPos
     }
 
-    public void OnGameStateChanged(GameData gameData)
+    //public void OnGameStateChanged(GameData gameData)
+    //{
+    //    // Set InputWindow, InputTime indication.
+    //    timeofWindow = gameData.interTrialIntervalSeconds + gameData.inputWindowSeconds;
+    //}
+
+    public void UpdateTimeofWindow(float newDuration) 
     {
-        // Set InputWindow, InputTime indication.
-        timeofWindow = gameData.interTrialIntervalSeconds + gameData.inputWindowSeconds;
+        timeofWindow = newDuration;
     }
 
     private void OnTriggerEnter(Collider other)

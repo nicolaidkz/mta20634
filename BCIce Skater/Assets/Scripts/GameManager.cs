@@ -197,9 +197,13 @@ public class GameManager : MonoBehaviour
         gameTimers.interTrialTimer = interTrialTimer;
         gameTimers.inputWindowTimer = inputWindowTimer;
         onGameTimeUpdate.Invoke(gameTimers);
-        if (Player.GetComponent<skaterMovement>().timeToReachTarget != interTrialIntervalSeconds + inputWindowSeconds)
+        //if (Player.GetComponent<skaterMovement>().timeToReachTarget != interTrialIntervalSeconds + inputWindowSeconds)
+        //{
+        //    onGameStateChanged.Invoke(createGameData());
+        //}
+        if (Player.GetComponent<skaterMovement>().timeToReachTarget != interTrialIntervalSeconds + inputWindowSeconds) 
         {
-            onGameStateChanged.Invoke(createGameData());
+            Player.GetComponent<skaterMovement>().SendMessage("UpdateTimeofWindow", interTrialIntervalSeconds+inputWindowSeconds);
         }
     }
 
