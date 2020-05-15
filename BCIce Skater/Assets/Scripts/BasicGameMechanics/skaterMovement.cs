@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class skaterMovement : MonoBehaviour
 {
@@ -32,9 +33,12 @@ public class skaterMovement : MonoBehaviour
     public GameObject Fail;
     public GameObject Win2;
     public GameObject Alert;
+
+    public GameObject endText;
     // Start is called before the first frame update
     void Start()
     {
+        GameObject.Find("StartText").SetActive(false);
         directionSwitch = GameObject.Find("Player");
         gameManager = GameObject.Find("GameManager");
         startPos = target = transform.position;
@@ -47,41 +51,45 @@ public class skaterMovement : MonoBehaviour
         t += Time.deltaTime / timeToReachTarget;
         transform.position = Vector3.Lerp(startPos, target, t);
 
-        if (Input.GetKeyDown("space"))
+        if (pointNr < gameManager.GetComponent<GameManager>().trials)
         {
-            bciActivated(); // Run method for succesful BCI activation
-        }
-        if (Vector2.Distance(transform.position, targetPos.transform.position) > turnDistance && !fail && !check1)
-        {
-            SetDestination(targetPos.transform.position, timeofWindow);
-            check1 = true;
-        }
-        else if (Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance && correctInput)
-        {
-            startPos = transform.position;
-            OnTargetPosChanged();
-            SetDestination(targetPos.transform.position, timeofWindow);
-            check1 = false; check2 = false; check3 = false;
-            gameManager.SendMessage("ResumeTrial");
+            if (Input.GetKeyDown("space"))
+            {
+                bciActivated(); // Run method for succesful BCI activation
+            }
+            if (Vector2.Distance(transform.position, targetPos.transform.position) > turnDistance && !fail && !check1)
+            {
+                SetDestination(targetPos.transform.position, timeofWindow);
+                check1 = true;
+            }
+            else if (Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance && correctInput)
+            {
+                startPos = transform.position;
+                OnTargetPosChanged();
+                SetDestination(targetPos.transform.position, timeofWindow);
+                check1 = false; check2 = false; check3 = false;
+                StartCoroutine(Signal(Win2));
+                gameManager.SendMessage("ResumeTrial");
 
-        }
-        else if (!correctInput && !collided && !check2 && Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance)
-        {
-            startPos = transform.position;
-            fail = true;
-            SetDestination(incorrectPos, 2);
-            check2 = true;
-            gameManager.SendMessage("PauseTrial");
-            GameObject.Find("DifficultyAdjuster").SendMessage("InputRejected");
-            StartCoroutine(Signal(Fail));
-        }
-        if ((Vector2.Distance(transform.position, incorrectPos) < turnDistance && fail && !check3) || (collided && !check3))
-        {
-            startPos = transform.position;
-            collided = true;
-            SetDestination(targetPos.transform.position, 2);
-            correctInput = true;
-            check3 = true;
+            }
+            else if (!correctInput && !collided && !check2 && Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance)
+            {
+                startPos = transform.position;
+                fail = true;
+                SetDestination(incorrectPos, 2);
+                check2 = true;
+                gameManager.SendMessage("PauseTrial");
+                GameObject.Find("DifficultyAdjuster").SendMessage("InputRejected");
+                StartCoroutine(Signal(Fail));
+            }
+            if ((Vector2.Distance(transform.position, incorrectPos) < turnDistance && fail && !check3) || (collided && !check3))
+            {
+                startPos = transform.position;
+                collided = true;
+                SetDestination(targetPos.transform.position, 2);
+                correctInput = true;
+                check3 = true;
+            }
         }
     }
 
@@ -139,7 +147,20 @@ public class skaterMovement : MonoBehaviour
     {
         if (other.gameObject.tag == "EndGame")
         {
-            Debug.Log("End Game");
+            // Log what needs to be logged
+
+            if (SceneManager.GetActiveScene().name == "Constant")
+            {
+                SceneManager.LoadScene("Staggered");
+            }
+            if (SceneManager.GetActiveScene().name == "Staggered")
+            {
+                SceneManager.LoadScene("None");
+            }
+            if (SceneManager.GetActiveScene().name == "None")
+            {
+                endText.SetActive(true);
+            }
         }
     }
 

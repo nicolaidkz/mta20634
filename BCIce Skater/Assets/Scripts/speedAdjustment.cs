@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class speedAdjustment : MonoBehaviour
 {
-    public enum AdjustmentType { Constant, Staggered }
+    public enum AdjustmentType { Constant, Staggered, None }
     public float decreaseT = 1.8f, increaseT = 0.5f;
     public float unit = 0.5f;
     public AdjustmentType Scenario;
@@ -92,6 +92,8 @@ public class speedAdjustment : MonoBehaviour
                 }
                 else Debug.Log("staggering speed adjustment..");
                 // we are still logging three trials before making a decision.
+                break;
+            case AdjustmentType.None:
                 break;
             default:
                 Debug.Log("Error with adjustment type: " + Scenario.ToString());

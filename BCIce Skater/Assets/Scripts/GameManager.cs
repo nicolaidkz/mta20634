@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
     private float startPolicyReview = 0.2f; // percentage of trials which should pass before we start reviewing policy.
 
     [SerializeField]
-    private int trials = 20;
+    public int trials = 20;
 
     private InputTypes currentInputDecision = InputTypes.RejectAllInput;
 
