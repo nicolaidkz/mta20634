@@ -29,6 +29,9 @@ public class skaterMovement : MonoBehaviour
 
     private GameObject directionSwitch;
 
+    public GameObject Fail;
+    public GameObject Win2;
+    public GameObject Alert;
     // Start is called before the first frame update
     void Start()
     {
@@ -60,6 +63,7 @@ public class skaterMovement : MonoBehaviour
             SetDestination(targetPos.transform.position, timeofWindow);
             check1 = false; check2 = false; check3 = false;
             gameManager.SendMessage("ResumeTrial");
+
         }
         else if (!correctInput && !collided && !check2 && Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance)
         {
@@ -69,6 +73,7 @@ public class skaterMovement : MonoBehaviour
             check2 = true;
             gameManager.SendMessage("PauseTrial");
             GameObject.Find("DifficultyAdjuster").SendMessage("InputRejected");
+            StartCoroutine(Signal(Fail));
         }
         if ((Vector2.Distance(transform.position, incorrectPos) < turnDistance && fail && !check3) || (collided && !check3))
         {
@@ -92,6 +97,7 @@ public class skaterMovement : MonoBehaviour
     {
         Debug.Log("Direction Changed");
         correctInput = true;
+
     }
 
     void OnTargetPosChanged() 
@@ -130,5 +136,17 @@ public class skaterMovement : MonoBehaviour
         {
             Debug.Log("End Game");
         }
+    }
+
+    public void AlertSignal()
+    {
+        StartCoroutine(Signal(Alert));
+    }
+
+    IEnumerator Signal(GameObject gameObject)
+    {
+        gameObject.SetActive(true);
+        yield return new WaitForSeconds(2);
+        gameObject.SetActive(false);
     }
 }

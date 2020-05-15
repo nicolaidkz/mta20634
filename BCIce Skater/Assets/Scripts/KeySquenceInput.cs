@@ -395,7 +395,7 @@ public class KeySquenceInput : MonoBehaviour
         if (success)
         {
             keySequencerGui.GetComponent<KeyPressIndicator>().UIKey("nothing", "success");
-            taskDone = true;
+            //taskDone = true;
             lastKey = KeyCode.Dollar;
             lastKey2 = KeyCode.Dollar;
             Debug.Log("Done");

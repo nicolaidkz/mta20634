@@ -42,6 +42,10 @@ public class ProgressIndication : MonoBehaviour
             float progress = gameTimers.interTrialTimer / progressBarDuration;
             float newPosition = progress * progressBar.sizeDelta.x;
             positionPusher.sizeDelta = new Vector2(newPosition, positionPusher.sizeDelta.y);
+            if(progress > 0.5f && progress < 0.501f)
+            {
+                GameObject.Find("Player").SendMessage("AlertSignal");
+            }
         }
     }
 
