@@ -74,10 +74,11 @@ public enum GamePolicy {
     MeetDesignGoals, // this is equivalent to Fab.Input.
     LooseOperation // this just accepts whatever input comes in regardless of validity.
 }
-
 public class GameManager : MonoBehaviour
 {
     private GameObject player;
+    public GameObject Obstacle;
+    public GameObject EndGameCollider;
     // TODO for the future: Fixate fabricated input 1 second, 2 second, 3 second after the input attempt.
     //public enum FabInputDistance {
     //    TwoSecs,
@@ -447,15 +448,17 @@ public class GameManager : MonoBehaviour
 
     public void createPoints()
     {
+        Instantiate(EndGameCollider, new Vector3(0, 0, 0), Quaternion.identity);
         for (int i = 2; i < trials + 1; i++)
         {
             var go = new GameObject("Point"+i);
             GameObject.Find("Point" + i).transform.parent = GameObject.Find("Points").transform;
             GameObject.Find("Point"+i).transform.position = pointCoords;
+            GameObject.Find("EndGameCollider(Clone)").transform.position = pointCoords;
             pointCoords += new Vector3(0, -10, 0);
             pointCoords.x *= -1;
+            Instantiate(Obstacle, new Vector3(0, -10*i, 0), Quaternion.identity);
         }
-   
     }
 
 }

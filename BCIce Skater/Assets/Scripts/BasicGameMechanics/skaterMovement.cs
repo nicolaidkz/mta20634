@@ -108,7 +108,13 @@ public class skaterMovement : MonoBehaviour
             Animations.rotate = false;
         }
         directionSwitch.GetComponent<Animations>().ToggleRotate();
-        pointNr++; targetPos = GameObject.Find("Point" + pointNr); // Set next point as target pos
+        pointNr++;
+        //if (pointNr > gameManager.GetComponent<GameManager>().trials)
+        //{
+          //  Debug.Log("test");
+        //}
+
+        targetPos = GameObject.Find("Point" + pointNr); // Set next point as target pos
         incorrectPos = targetPos.transform.position + ((targetPos.transform.position - transform.position).normalized * distancetoIncorrect); // arrange incorrectPos
     }
 
@@ -116,5 +122,13 @@ public class skaterMovement : MonoBehaviour
     {
         // Set InputWindow, InputTime indication.
         timeofWindow = gameData.interTrialIntervalSeconds + gameData.inputWindowSeconds;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "EndGame")
+        {
+            Debug.Log("End Game");
+        }
     }
 }
