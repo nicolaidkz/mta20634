@@ -109,6 +109,12 @@ public class KeySquenceInput : MonoBehaviour
     public OnKeyDown onKeyDown;
 
     // Start is called before the first frame update
+    public void ResetUI()
+    {
+        taskDone = false;
+        Debug.Log("The end");
+        keySequencerGui.GetComponent<KeyPressIndicator>().UIKey("nothing", "reset");
+    }
 
     void Start()
     {
@@ -392,13 +398,13 @@ public class KeySquenceInput : MonoBehaviour
             success = false;
         }
 
-        if (success)
+        if (success && GameObject.Find("GameManager").GetComponent<GameManager>().window)
         {
             keySequencerGui.GetComponent<KeyPressIndicator>().UIKey("nothing", "success");
             taskDone = true;
             lastKey = KeyCode.Dollar;
             lastKey2 = KeyCode.Dollar;
-            Debug.Log("Done");
+            Debug.Log("Task Done");
         }
         else
         {
