@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 ﻿{"cameraMode":{"drawMode":0,"name":"Shaded","section":"Shading Mode"},"sceneLighting":true,"audioPlay":false,"sceneViewState":{"showFog":true,"showMaterialUpdate":false,"showSkybox":true,"showFlares":true,"showImageEffects":true,"showParticleSystems":true},"in2DMode":true,"pivot":{"x":9.637566566467286,"y":5.940986156463623,"z":-99.12890625},"rotation":{"x":0.0,"y":0.0,"z":0.0,"w":1.0},"size":32.58355712890625,"orthographic":true}
+=======
+﻿{"cameraMode":{"drawMode":0,"name":"Shaded","section":"Shading Mode"},"sceneLighting":true,"audioPlay":false,"sceneViewState":{"showFog":true,"showMaterialUpdate":false,"showSkybox":true,"showFlares":true,"showImageEffects":true,"showParticleSystems":true},"in2DMode":true,"pivot":{"x":4.70172643661499,"y":0.9698712825775147,"z":-63.625},"rotation":{"x":0.0,"y":0.0,"z":0.0,"w":1.0},"size":17.995141983032228,"orthographic":true}
+>>>>>>> UIFix

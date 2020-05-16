@@ -91,8 +91,8 @@ public class GameManager : MonoBehaviour
     private List<SequenceData> CurrentSequences;
 
     // MTA20634
-
     public GameObject Player;
+    public bool window;
 
     [SerializeField]
     private float fabInputRate = 0.1f; // percentage, value between 0 - 1 (rounded up)
@@ -118,6 +118,7 @@ public class GameManager : MonoBehaviour
     private InputTypes currentInputDecision = InputTypes.RejectAllInput;
 
     private int currentTrial;
+
 
     [SerializeField]
     private GamePolicy gamePolicy = GamePolicy.MeetDesignGoals;
@@ -168,6 +169,7 @@ public class GameManager : MonoBehaviour
     {
         if (gameState == GameState.Running) {
             if (inputWindow == InputWindowState.Closed) {
+                window = false;
                 interTrialTimer += Time.deltaTime;
                 if (interTrialTimer > interTrialIntervalSeconds && actualInputOrder.Count < trials) {
                     interTrialTimer = 0f;
@@ -178,6 +180,7 @@ public class GameManager : MonoBehaviour
                     EndGame();
                 }
             } else if (inputWindow == InputWindowState.Open) {
+                window = true;
                 //Debug.Log("inputwindow is open");
                 inputWindowTimer += Time.deltaTime;
                 if (inputWindowTimer > currentFabAlarm && alarmFired == false) {
@@ -190,6 +193,7 @@ public class GameManager : MonoBehaviour
                     // The input window expired
                     MakeInputDecision(null, true);
                     alarmFired = false;
+                    GameObject.Find("InputManager").SendMessage("ResetUI");
                 }
             }
         }
@@ -350,7 +354,6 @@ public class GameManager : MonoBehaviour
         if (actualInputOrder.Count >= startPolicyReviewTrial) {
             //ReviewPolicy();
         } 
-
 
 
         // update Game Policy

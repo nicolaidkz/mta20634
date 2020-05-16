@@ -5,7 +5,7 @@ public class KeyPressIndicator : MonoBehaviour
 {
     public GameObject[] keyPrefabs;
     public float alpha = 0.001f;
-    Color darkGreen = new Color(0, 0.7f, 0, 1);
+    Color green = new Color(0, 0.9f, 0, 1);
     string keyOne = KeyCode.T.ToString();
     string keyTwo = KeyCode.Y.ToString();
     string keyThree = KeyCode.I.ToString();
@@ -33,7 +33,7 @@ public class KeyPressIndicator : MonoBehaviour
         {
             if (keyPressed == keyOne) //T
             {
-                GameObject newPrefab = Instantiate(keyPrefabs[0], new Vector3(transform.position.x + numKeys * distance, transform.position.y, transform.position.z), Quaternion.identity, transform.parent);
+                GameObject newPrefab = Instantiate(keyPrefabs[0], new Vector3(transform.position.x + 0 * distance, transform.position.y, transform.position.z), Quaternion.identity, transform.parent);
                 newPrefab.transform.parent = gameObject.transform.GetChild(1).transform;
                 if (numKeys < keyPrefabs.Length)
                 {
@@ -43,7 +43,7 @@ public class KeyPressIndicator : MonoBehaviour
             }
             else if (keyPressed == keyTwo) //Y
             {
-                GameObject newPrefab = Instantiate(keyPrefabs[1], new Vector3(transform.position.x + numKeys * distance, transform.position.y, transform.position.z), Quaternion.identity, transform.parent);
+                GameObject newPrefab = Instantiate(keyPrefabs[1], new Vector3(transform.position.x + 1 * distance, transform.position.y, transform.position.z), Quaternion.identity, transform.parent);
                 newPrefab.transform.parent = gameObject.transform.GetChild(1).transform;
                 if (numKeys < keyPrefabs.Length)
                 {
@@ -53,7 +53,7 @@ public class KeyPressIndicator : MonoBehaviour
             }
             else if (keyPressed == keyThree) //U
             {
-                GameObject newPrefab = Instantiate(keyPrefabs[2], new Vector3(transform.position.x + numKeys * distance, transform.position.y, transform.position.z), Quaternion.identity, transform.parent);
+                GameObject newPrefab = Instantiate(keyPrefabs[2], new Vector3(transform.position.x + 3 * distance, transform.position.y, transform.position.z), Quaternion.identity, transform.parent);
                 newPrefab.transform.parent = gameObject.transform.GetChild(1).transform;
                 if (numKeys < keyPrefabs.Length)
                 {
@@ -63,7 +63,7 @@ public class KeyPressIndicator : MonoBehaviour
             }
             else if (keyPressed == keyFour) //I
             {
-                GameObject newPrefab = Instantiate(keyPrefabs[3], new Vector3(transform.position.x + numKeys * distance, transform.position.y, transform.position.z), Quaternion.identity, transform.parent);
+                GameObject newPrefab = Instantiate(keyPrefabs[3], new Vector3(transform.position.x + 2 * distance, transform.position.y, transform.position.z), Quaternion.identity, transform.parent);
                 newPrefab.transform.parent = gameObject.transform.GetChild(1).transform;
                 if (numKeys < keyPrefabs.Length)
                 {
@@ -79,13 +79,20 @@ public class KeyPressIndicator : MonoBehaviour
 
             if (action == "reset")
             {
-
                 while (transform.GetChild(1).childCount > 0)
                 {
                     Transform child = transform.GetChild(1).GetChild(0);
                     child.parent = null;
                     Destroy(child.gameObject);
                     numKeys--;
+                }
+            }
+
+            if (action == "success")
+            {
+                for (int i = 0; i < transform.GetChild(1).childCount; i++)
+                {
+                    transform.GetChild(1).GetChild(i).GetComponent<SpriteRenderer>().color = green;
                 }
             }
         }
