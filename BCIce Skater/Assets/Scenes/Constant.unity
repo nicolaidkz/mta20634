@@ -20329,9 +20329,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   decreaseT: 1.2
-  increaseT: 0.5
+  increaseT: 1.2
   unit: 0.5
-  Scenario: 0
+  Scenario: 1
 --- !u!4 &1599748592
 Transform:
   m_ObjectHideFlags: 0
@@ -26469,7 +26469,7 @@ PrefabInstance:
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: interTrialIntervalSeconds
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
@@ -26494,12 +26494,12 @@ PrefabInstance:
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: fabInputRate
-      value: 0
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: recognitionRate
-      value: 1
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
@@ -26520,7 +26520,7 @@ PrefabInstance:
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: inputWindowSeconds
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
@@ -26528,6 +26528,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3252389901028834422, guid: b615f994bafbfcb4681186307fe79cd5,
         type: 3}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: noInputReceivedFabAlarm
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130351, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: m_Name

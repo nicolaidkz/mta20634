@@ -112,7 +112,7 @@ public class KeySquenceInput : MonoBehaviour
     public void ResetUI()
     {
         taskDone = false;
-        Debug.Log("The end");
+        //Debug.Log("The end");
         keySequencerGui.GetComponent<KeyPressIndicator>().UIKey("nothing", "reset");
     }
 
@@ -371,7 +371,7 @@ public class KeySquenceInput : MonoBehaviour
         }
 
         // If the sequence was played too slowly, reject it.
-        Debug.Log("sequenceTime_ms: " + sequenceTime_ms + ", sequenceTimeLimit_ms: " + sequenceTimeLimit_ms);
+        //Debug.Log("sequenceTime_ms: " + sequenceTime_ms + ", sequenceTimeLimit_ms: " + sequenceTimeLimit_ms);
         if (sequenceTime_ms > sequenceTimeLimit_ms)
         {
             sequenceData.sequenceSpeed = SequenceSpeed.Slow;
@@ -380,7 +380,7 @@ public class KeySquenceInput : MonoBehaviour
             success = false;
         }
 
-        Debug.Log(currentKeySequenceLogs["Event"].Count + " AND " + keysToPress.GetLength(0));
+        //Debug.Log(currentKeySequenceLogs["Event"].Count + " AND " + keysToPress.GetLength(0));
 
         // If the sequence contains too many keys, reject it.
         if (currentKeySequenceLogs["Event"].Count > keysToPress.GetLength(0))

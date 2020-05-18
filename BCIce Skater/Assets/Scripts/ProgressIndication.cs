@@ -38,7 +38,7 @@ public class ProgressIndication : MonoBehaviour
             float progress = (interTrialDuration + gameTimers.inputWindowTimer) / progressBarDuration;
             float newPosition = progress * progressBar.sizeDelta.x;
             positionPusher.sizeDelta = new Vector2(newPosition, positionPusher.sizeDelta.y);
-            Debug.Log(progress);
+            //Debug.Log(progress);
         } else if (gameTimers.interTrialTimer > 0f) {
             float progress = gameTimers.interTrialTimer / progressBarDuration;
             float newPosition = progress * progressBar.sizeDelta.x;
@@ -56,7 +56,7 @@ public class ProgressIndication : MonoBehaviour
         progressBarDuration = gameData.interTrialIntervalSeconds + gameData.inputWindowSeconds;
         inputWindowDuration = gameData.inputWindowSeconds;
         interTrialDuration = gameData.interTrialIntervalSeconds;
-        Debug.Log("GAMESTATE CHANGED");
+        //Debug.Log("GAMESTATE CHANGED");
         // Calculate visual size of input window.
         float inputWindowRatio = inputWindowDuration / progressBarDuration;
         float newInputWindowSize = inputWindowRatio * progressBar.sizeDelta.x;
@@ -68,6 +68,10 @@ public class ProgressIndication : MonoBehaviour
         interTrialDuration = newWindow;
         progressBarDuration = interTrialDuration + inputWindowDuration;
         Debug.Log("updating interTrialDuration to: " + interTrialDuration);
+        //recalculate visual size of input window.
+        float inputWindowRatio = inputWindowDuration / progressBarDuration;
+        float newInputWindowSize = inputWindowRatio * progressBar.sizeDelta.x;
+        inputWindow.sizeDelta = new Vector2(newInputWindowSize, inputWindow.sizeDelta.y);
     }
     public void UpdateInputWindow(float newWindow) 
     {

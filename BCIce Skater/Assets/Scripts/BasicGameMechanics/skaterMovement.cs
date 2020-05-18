@@ -69,16 +69,19 @@ public class skaterMovement : MonoBehaviour
                 SetDestination(targetPos.transform.position, timeofWindow);
                 check1 = false; check2 = false; check3 = false;
                 StartCoroutine(Signal(Win2));
+                //GameObject.Find("KeySequencer").SendMessage("TurnGreen"); for this to work, it needs to be a coRoutine that shines green for some amount of time...
+                gameManager.GetComponent<GameManager>().interTrialTimer = 0;
                 gameManager.SendMessage("ResumeTrial");
 
             }
-            else if (!correctInput && !collided && !check2 && Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance)
+            else if (!correctInput && !check2 && Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance)
             {
                 startPos = transform.position;
                 fail = true;
                 SetDestination(incorrectPos, 2);
                 check2 = true;
                 gameManager.SendMessage("PauseTrial");
+                //GameObject.Find("KeySequencer").SendMessage("TurnRed"); for this to work, it needs to be a coRoutine that shines red for some amount of time...
                 GameObject.Find("DifficultyAdjuster").SendMessage("InputRejected");
                 StartCoroutine(Signal(Fail));
             }
@@ -105,7 +108,6 @@ public class skaterMovement : MonoBehaviour
     {
         Debug.Log("Direction Changed");
         correctInput = true;
-
     }
 
     void OnTargetPosChanged() 

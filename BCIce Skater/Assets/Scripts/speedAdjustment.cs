@@ -5,8 +5,9 @@ using UnityEngine;
 public class speedAdjustment : MonoBehaviour
 {
     public enum AdjustmentType { Constant, Staggered, None }
-    public float decreaseT = 1.8f, increaseT = 0.5f;
+    public float decreaseT = 1.8f, increaseT = 1.28f;
     public float unit = 0.5f;
+    private float intervalMin = 2f, intervalMax= 10f;
     public AdjustmentType Scenario;
     List<float> trialHistory = new List<float>();
     //public void OnGameDecision(GameDecisionData decisionData) 
@@ -19,6 +20,11 @@ public class speedAdjustment : MonoBehaviour
     //}
 
 
+
+    void Update() 
+    {
+        increaseT = GameObject.Find("GameManager").GetComponent<GameManager>().inputWindowSeconds / 2;
+    }
     public void InputAccepted(float timeSinceWindowStart)
     {
         float precision = timeSinceWindowStart;
@@ -47,13 +53,13 @@ public class speedAdjustment : MonoBehaviour
                     {
                         Debug.Log("increase!");
                         float ItIs = GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds;
-                        if (ItIs - unit >= 5)
+                        if (ItIs - unit >= intervalMin)
                         {
                             GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds -= unit;
                             GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (ItIs - unit));
                         }
                     }
-                    else if (lastTrialPrecision > decreaseT)
+                    else if (lastTrialPrecision > increaseT)
                     {
                         Debug.Log("within parameters, no changes made");
                     }
@@ -65,7 +71,7 @@ public class speedAdjustment : MonoBehaviour
                     Debug.Log("Window Expired");
                     Debug.Log("decrease!");
                     float ItIs = GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds;
-                    if (ItIs + unit <= 10)
+                    if (ItIs + unit <= intervalMax)
                     {
                         GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds += unit;
                         GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (ItIs + unit));
@@ -82,13 +88,49 @@ public class speedAdjustment : MonoBehaviour
                     {
                         lastTrialPrecisions[i] = trialHistory[trialHistory.Count - (1 + i)];
                     }
-                    Debug.Log("Adjusting Speed Staggered based on: " + lastTrialPrecisions[0] + lastTrialPrecisions[1] + lastTrialPrecisions[2]);
+                    Debug.Log("Adjusting Speed Staggered based on: " + AverageBetween(lastTrialPrecisions[0],lastTrialPrecisions[1],lastTrialPrecisions[2]));
                     // if the average of three trials are below a certain threshold, increase the speed by UNIT*3
-                    if (AverageBetween(lastTrialPrecisions[0], lastTrialPrecisions[1], lastTrialPrecisions[2]) < increaseT) { }
-                    // if the average of three  trials are above a certain threshold, lower the speed by UNIT*3
-                    else if (AverageBetween(lastTrialPrecisions[0], lastTrialPrecisions[1], lastTrialPrecisions[2]) > decreaseT) { }
-                    // else (if between thresholds) leave the poor speed alone
-                    else { Debug.Log("average within parameters, no changes made"); }
+                    if (AverageBetween(lastTrialPrecisions[0], lastTrialPrecisions[1], lastTrialPrecisions[2]) < increaseT) 
+                    {
+                        Debug.Log("increase!");
+                        float ItIs = GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds;
+                        if (ItIs - unit*3 >= intervalMin)
+                        {
+
+                            GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds -= unit*3;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (ItIs - unit*3));
+                        }
+                        else 
+                        {
+                            GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds = 5;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", 5);
+                        }
+                        break;
+                    }
+                    // if the average of three  trials are above a certain threshold, leave the speed alone
+                    else if (AverageBetween(lastTrialPrecisions[0], lastTrialPrecisions[1], lastTrialPrecisions[2]) > increaseT) 
+                    {
+                        Debug.Log("within parameters, no changes made");
+                        break;
+                    }
+                  
+                    else 
+                    {
+                        Debug.Log("Window Expired");
+                        Debug.Log("decrease!");
+                        float ItIs = GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds;
+                        if (ItIs + unit * 3 <= intervalMax)
+                        {
+                            GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds += unit * 3;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (ItIs + unit * 3));
+                        }
+                        else 
+                        {
+                            GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds = 10;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", 10);
+                        }
+                        break;
+                    }
                 }
                 else Debug.Log("staggering speed adjustment..");
                 // we are still logging three trials before making a decision.

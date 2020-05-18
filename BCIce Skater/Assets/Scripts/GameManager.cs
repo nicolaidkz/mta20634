@@ -128,9 +128,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public float interTrialIntervalSeconds = 4.5f;
     [SerializeField]
-    private float inputWindowSeconds = 1f;
-    private float inputWindowTimer = 0.0f;
-    private float interTrialTimer = 0.0f;
+    public float inputWindowSeconds = 1f;
+    public float inputWindowTimer = 0.0f;
+    public float interTrialTimer = 0.0f;
 
     private GameState gameState = GameState.Stopped;
 
@@ -250,7 +250,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("accTrials: " + accTrials + ", ended: " + accTrialsEnded + ", new target amount: " + accTrialsTarget);
 
         for (int i = 0; i < fabTrialsTarget; i++) {
-            designedInputOrder.Add(InputTypes.FabInput);
+            designedInputOrder.Add(InputTypes.RejectAllInput);
         }
 
         for (int i = 0; i < accTrialsTarget; i++) {

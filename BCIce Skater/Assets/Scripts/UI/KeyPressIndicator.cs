@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class KeyPressIndicator : MonoBehaviour
 {
@@ -8,8 +9,8 @@ public class KeyPressIndicator : MonoBehaviour
     Color green = new Color(0, 0.9f, 0, 1);
     string keyOne = KeyCode.T.ToString();
     string keyTwo = KeyCode.Y.ToString();
-    string keyThree = KeyCode.I.ToString();
-    string keyFour = KeyCode.U.ToString();
+    string keyThree = KeyCode.U.ToString();
+    string keyFour = KeyCode.I.ToString();
     private int numKeys = 0;
     float distance = 1.3f;
 
@@ -90,10 +91,7 @@ public class KeyPressIndicator : MonoBehaviour
 
             if (action == "success")
             {
-                for (int i = 0; i < transform.GetChild(1).childCount; i++)
-                {
-                    transform.GetChild(1).GetChild(i).GetComponent<SpriteRenderer>().color = green;
-                }
+                // yay, but wait! we run TurnGreen instead when the skater turns, so it takes rejected input into account.
             }
         }
 
@@ -126,5 +124,12 @@ public class KeyPressIndicator : MonoBehaviour
             }
         }
         */
+    }
+    void TurnGreen()
+    {
+        for (int i = 0; i < transform.GetChild(1).childCount; i++)
+        {
+            transform.GetChild(1).GetChild(i).GetComponent<SpriteRenderer>().color = green;
+        }
     }
 }
