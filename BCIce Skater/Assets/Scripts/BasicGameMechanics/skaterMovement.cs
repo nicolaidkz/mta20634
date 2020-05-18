@@ -34,6 +34,8 @@ public class skaterMovement : MonoBehaviour
     public GameObject Win2;
     public GameObject Alert;
 
+    private bool star;
+
     public GameObject endText;
     // Start is called before the first frame update
     void Start()
@@ -68,7 +70,8 @@ public class skaterMovement : MonoBehaviour
                 OnTargetPosChanged();
                 SetDestination(targetPos.transform.position, timeofWindow);
                 check1 = false; check2 = false; check3 = false;
-                StartCoroutine(Signal(Win2));
+                if (star == true) StartCoroutine(Signal(Win2));
+                star = false;
                 //GameObject.Find("KeySequencer").SendMessage("TurnGreen"); for this to work, it needs to be a coRoutine that shines green for some amount of time...
                 gameManager.GetComponent<GameManager>().interTrialTimer = 0;
                 gameManager.SendMessage("ResumeTrial");
@@ -108,6 +111,7 @@ public class skaterMovement : MonoBehaviour
     {
         Debug.Log("Direction Changed");
         correctInput = true;
+        star = true;
     }
 
     void OnTargetPosChanged() 

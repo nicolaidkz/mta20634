@@ -20331,7 +20331,7 @@ MonoBehaviour:
   decreaseT: 1.2
   increaseT: 1.2
   unit: 0.5
-  Scenario: 1
+  Scenario: 0
 --- !u!4 &1599748592
 Transform:
   m_ObjectHideFlags: 0
@@ -26469,7 +26469,7 @@ PrefabInstance:
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: interTrialIntervalSeconds
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
@@ -26499,7 +26499,7 @@ PrefabInstance:
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: recognitionRate
-      value: 0.8
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
@@ -26520,7 +26520,7 @@ PrefabInstance:
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: inputWindowSeconds
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
@@ -26532,6 +26532,11 @@ PrefabInstance:
         type: 3}
       propertyPath: noInputReceivedFabAlarm
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
+        type: 3}
+      propertyPath: startPolicyReview
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130351, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}

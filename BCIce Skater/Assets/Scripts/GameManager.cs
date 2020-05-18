@@ -235,7 +235,7 @@ public class GameManager : MonoBehaviour
         // TODO: Take actualInputOrder into account.
         // Count the actual input so far.
         int trialsEnded = actualInputOrder.Count;
-        int fabTrialsEnded = actualInputOrder.Count(c => c == InputTypes.FabInput);
+        int fabTrialsEnded = actualInputOrder.Count(c => c == InputTypes.RejectAllInput);
         int accTrialsEnded = actualInputOrder.Count(c => c == InputTypes.AcceptAllInput);
         int rejTrialsEnded = actualInputOrder.Count(c => c == InputTypes.RejectAllInput);
 
@@ -396,7 +396,7 @@ public class GameManager : MonoBehaviour
                         //CloseInputWindow();
                     } else if (inputData.validity == InputValidity.Accepted) {
                         // Recycles the AcceptAllInput
-                        currentInputDecision = InputTypes.RejectAllInput;       // BUG? REJECTS ALL INPUT IMMEDIATELY AFTER ACCEPTING INPUT
+                        //currentInputDecision = InputTypes.RejectAllInput;       // BUG? REJECTS ALL INPUT IMMEDIATELY AFTER ACCEPTING INPUT
                         GameObject.Find("DifficultyAdjuster").SendMessage("InputRejected");
                     }
                     Debug.Log("Case: MeetDesignGoals, We should Accept this input if it is valid.");
@@ -411,8 +411,8 @@ public class GameManager : MonoBehaviour
         } else if (inputData == null && windowExpired) {
             // if this is in response to that the input window has expired,
             // then we submit a Rejection.
-            currentInputDecision = InputTypes.RejectAllInput;
-            Debug.Log("Case: Input Window Expired, Rejecting.");
+            //currentInputDecision = InputTypes.RejectAllInput;
+            //Debug.Log("Case: Input Window Expired, Rejecting.");
 
             CloseInputWindow();
         } else if (inputData == null && designedInputOrder.First() == InputTypes.FabInput) {
