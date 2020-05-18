@@ -36,6 +36,8 @@ public class skaterMovement : MonoBehaviour
 
     private bool star;
 
+    private float windowTimer;
+
     public GameObject endText;
     // Start is called before the first frame update
     void Start()
@@ -55,10 +57,6 @@ public class skaterMovement : MonoBehaviour
 
         if (pointNr < gameManager.GetComponent<GameManager>().trials)
         {
-            if (Input.GetKeyDown("space"))
-            {
-                bciActivated(); // Run method for succesful BCI activation
-            }
             if (Vector2.Distance(transform.position, targetPos.transform.position) > turnDistance && !fail && !check1)
             {
                 SetDestination(targetPos.transform.position, timeofWindow);
@@ -74,6 +72,8 @@ public class skaterMovement : MonoBehaviour
                 star = false;
                 //GameObject.Find("KeySequencer").SendMessage("TurnGreen"); for this to work, it needs to be a coRoutine that shines green for some amount of time...
                 gameManager.GetComponent<GameManager>().interTrialTimer = 0;
+                GameObject.Find("DifficultyAdjuster").SendMessage("InputAccepted", windowTimer);
+                windowTimer = 0;
                 gameManager.SendMessage("ResumeTrial");
 
             }
@@ -107,11 +107,12 @@ public class skaterMovement : MonoBehaviour
         target = destination;
     }
 
-    void bciActivated()
+    void bciActivated(float inputWindowTimer)
     {
         Debug.Log("Direction Changed");
         correctInput = true;
         star = true;
+        windowTimer = inputWindowTimer;
     }
 
     void OnTargetPosChanged() 

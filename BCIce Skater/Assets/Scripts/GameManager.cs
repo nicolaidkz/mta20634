@@ -390,9 +390,9 @@ public class GameManager : MonoBehaviour
                 if (designedInputOrder.First() == InputTypes.AcceptAllInput) {
                     if (inputData.validity == InputValidity.Accepted) {
                         currentInputDecision = InputTypes.AcceptAllInput;       // INPUT ACCEPTED HERE
-                        Player.SendMessage("bciActivated");
+                        Player.SendMessage("bciActivated", inputWindowTimer);
                         Debug.Log("Correct sequence at: " + inputWindowTimer);
-                        GameObject.Find("DifficultyAdjuster").SendMessage("InputAccepted", inputWindowTimer);
+                        //GameObject.Find("DifficultyAdjuster").SendMessage("InputAccepted", inputWindowTimer);
                         //CloseInputWindow();
                     } else if (inputData.validity == InputValidity.Accepted) {
                         // Recycles the AcceptAllInput
