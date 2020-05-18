@@ -76,5 +76,6 @@ public class ProgressIndication : MonoBehaviour
     public void UpdateInputWindow(float newWindow) 
     {
         inputWindowDuration = newWindow;
+        UpdateIntertrialWindow(interTrialDuration); // reuse this to force redraw.
     }
 }

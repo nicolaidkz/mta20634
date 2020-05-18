@@ -20331,7 +20331,8 @@ MonoBehaviour:
   decreaseT: 1.2
   increaseT: 1.2
   unit: 0.5
-  Scenario: 0
+  inputUnit: 0.2
+  Scenario: 1
 --- !u!4 &1599748592
 Transform:
   m_ObjectHideFlags: 0

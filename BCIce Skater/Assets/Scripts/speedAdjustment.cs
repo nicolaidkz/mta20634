@@ -6,20 +6,16 @@ public class speedAdjustment : MonoBehaviour
 {
     public enum AdjustmentType { Constant, Staggered, None }
     public float decreaseT = 1.8f, increaseT = 1.28f;
-    public float unit = 0.5f;
-    private float intervalMin = 2f, intervalMax= 10f;
+    public float unit = 0.5f, inputUnit = 0.3f;
+    private float intervalMin = 2f, intervalMax= 10f, inputMin = 0.5f, inputMax = 3f;
     public AdjustmentType Scenario;
     List<float> trialHistory = new List<float>();
-    //public void OnGameDecision(GameDecisionData decisionData) 
-    //{
-    //    // this is where we get an update on the latest result of a trial.
-    //    Debug.Log("this is the decision from speedAdjustment: " + decisionData.decision);
-    //    float precision = 0f;
-    //    if (decisionData.decision == InputTypes.AcceptAllInput) precision = 1f; // precision here needs to be based on the time since window start...
-    //    AddTrialEntry(precision);
-    //}
+    GameObject GM;
 
-
+    void Start()
+    {
+        GM = GameObject.Find("GameManager");
+    }
 
     void Update() 
     {
@@ -52,11 +48,29 @@ public class speedAdjustment : MonoBehaviour
                     if (lastTrialPrecision < increaseT)
                     {
                         Debug.Log("increase!");
-                        float ItIs = GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds;
+
+
+                        float ItIs = GM.GetComponent<GameManager>().interTrialIntervalSeconds;
                         if (ItIs - unit >= intervalMin)
                         {
-                            GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds -= unit;
-                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (ItIs - unit));
+                           GM.GetComponent<GameManager>().interTrialIntervalSeconds -= unit;
+                           GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (ItIs - unit));
+                        }
+                        else
+                        {
+                            GM.GetComponent<GameManager>().interTrialIntervalSeconds = intervalMin;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", intervalMin);
+                        }
+                        float InS = GM.GetComponent<GameManager>().inputWindowSeconds;
+                        if (InS - inputUnit >= inputMin)
+                        {
+                            GM.GetComponent<GameManager>().inputWindowSeconds -= inputUnit;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", (InS - inputUnit));
+                        }
+                        else 
+                        {
+                            GM.GetComponent<GameManager>().inputWindowSeconds = inputMin;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", inputMin);
                         }
                     }
                     else if (lastTrialPrecision > increaseT)
@@ -70,11 +84,27 @@ public class speedAdjustment : MonoBehaviour
                 {
                     Debug.Log("Window Expired");
                     Debug.Log("decrease!");
-                    float ItIs = GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds;
+                    float ItIs = GM.GetComponent<GameManager>().interTrialIntervalSeconds;
                     if (ItIs + unit <= intervalMax)
                     {
-                        GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds += unit;
+                        GM.GetComponent<GameManager>().interTrialIntervalSeconds += unit;
                         GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (ItIs + unit));
+                    }
+                    else
+                    {
+                        GM.GetComponent<GameManager>().interTrialIntervalSeconds = intervalMax;
+                        GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", intervalMax);
+                    }
+                    float InS = GM.GetComponent<GameManager>().inputWindowSeconds;
+                    if (InS + inputUnit <= inputMax) 
+                    {
+                        GM.GetComponent<GameManager>().inputWindowSeconds += inputUnit;
+                        GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", (InS + inputUnit));
+                    }
+                    else
+                    {
+                        GM.GetComponent<GameManager>().inputWindowSeconds = inputMax;
+                        GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", inputMax);
                     }
                     break;
                 }
@@ -93,24 +123,45 @@ public class speedAdjustment : MonoBehaviour
                     if (AverageBetween(lastTrialPrecisions[0], lastTrialPrecisions[1], lastTrialPrecisions[2]) < increaseT) 
                     {
                         Debug.Log("increase!");
-                        float ItIs = GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds;
-                        if (ItIs - unit*3 >= intervalMin)
+
+
+                        float InterTrialSeconds = GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds;
+                        float InS = GM.GetComponent<GameManager>().inputWindowSeconds;
+                        if (InterTrialSeconds - unit*3 >= intervalMin)
                         {
 
                             GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds -= unit*3;
-                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (ItIs - unit*3));
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (InterTrialSeconds - unit*3));
                         }
                         else 
                         {
-                            GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds = 5;
-                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", 5);
+                            GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds = intervalMin;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", intervalMin);
+                        }
+                        if (InS - inputUnit * 3 >= inputMin) 
+                        {
+                        
                         }
                         break;
                     }
                     // if the average of three  trials are above a certain threshold, leave the speed alone
                     else if (AverageBetween(lastTrialPrecisions[0], lastTrialPrecisions[1], lastTrialPrecisions[2]) > increaseT) 
                     {
-                        Debug.Log("within parameters, no changes made");
+                        Debug.Log("within parameters, small changes made");
+
+                        float InterTrialSeconds = GM.GetComponent<GameManager>().interTrialIntervalSeconds;
+                        float InS = GM.GetComponent<GameManager>().inputWindowSeconds;
+                        if (InterTrialSeconds - unit * 1.5 >= intervalMin)
+                        {
+
+                            GM.GetComponent<GameManager>().interTrialIntervalSeconds -= unit * 1.5f;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (InterTrialSeconds - unit * 1.5));
+                        }
+                        else
+                        {
+                            GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds = intervalMin;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", intervalMin);
+                        }
                         break;
                     }
                   
