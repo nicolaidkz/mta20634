@@ -20333,6 +20333,7 @@ MonoBehaviour:
   unit: 0.5
   inputUnit: 0.2
   Scenario: 1
+  trialHistory: []
 --- !u!4 &1599748592
 Transform:
   m_ObjectHideFlags: 0
@@ -26480,7 +26481,7 @@ PrefabInstance:
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: trials
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
