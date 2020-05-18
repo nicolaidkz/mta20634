@@ -140,7 +140,13 @@ public class speedAdjustment : MonoBehaviour
                         }
                         if (InS - inputUnit * 3 >= inputMin) 
                         {
-                        
+                            GM.GetComponent<GameManager>().inputWindowSeconds -= inputUnit*3;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", (InS - inputUnit*3));
+                        }
+                        else
+                        {
+                            GM.GetComponent<GameManager>().inputWindowSeconds = inputMin;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", inputMin);
                         }
                         break;
                     }
@@ -162,6 +168,16 @@ public class speedAdjustment : MonoBehaviour
                             GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds = intervalMin;
                             GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", intervalMin);
                         }
+                        if (InS - inputUnit * 1.5f >= inputMin)
+                        {
+                            GM.GetComponent<GameManager>().inputWindowSeconds -= inputUnit * 1.5f;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", (InS - inputUnit * 1.5f));
+                        }
+                        else
+                        {
+                            GM.GetComponent<GameManager>().inputWindowSeconds = inputMin;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", inputMin);
+                        }
                         break;
                     }
                   
@@ -170,6 +186,7 @@ public class speedAdjustment : MonoBehaviour
                         Debug.Log("Window Expired");
                         Debug.Log("decrease!");
                         float ItIs = GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds;
+                        float InS = GM.GetComponent<GameManager>().inputWindowSeconds;
                         if (ItIs + unit * 3 <= intervalMax)
                         {
                             GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds += unit * 3;
@@ -178,7 +195,17 @@ public class speedAdjustment : MonoBehaviour
                         else 
                         {
                             GameObject.Find("GameManager").GetComponent<GameManager>().interTrialIntervalSeconds = 10;
-                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", 10);
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", intervalMax);
+                        }
+                        if (InS + inputUnit * 3 <= inputMax)
+                        {
+                            GM.GetComponent<GameManager>().inputWindowSeconds += inputUnit * 3;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", (InS + inputUnit * 3));
+                        }
+                        else
+                        {
+                            GameObject.Find("GameManager").GetComponent<GameManager>().inputWindowSeconds = inputMax;
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", inputMax);
                         }
                         break;
                     }
