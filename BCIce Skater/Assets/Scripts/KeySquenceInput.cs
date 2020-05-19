@@ -89,7 +89,7 @@ public class KeySquenceInput : MonoBehaviour
     private KeyCode lastKey2;
 
     string filepath;
-    string filename = "keysequencedata";
+    string filename = "Derp";
     string sep = ",";
     int sequenceNumber = 0;
 
@@ -118,6 +118,7 @@ public class KeySquenceInput : MonoBehaviour
 
     void Start()
     {
+        filename = NameSaving.playerName;
 
         sequenceNumber = 0;
         lastKey = KeyCode.None;

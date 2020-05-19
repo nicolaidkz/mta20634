@@ -17,6 +17,8 @@ public class LoggingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        filename = NameSaving.playerName;
+
         filepath = Application.dataPath;
         if (Application.platform == RuntimePlatform.OSXPlayer)
         {

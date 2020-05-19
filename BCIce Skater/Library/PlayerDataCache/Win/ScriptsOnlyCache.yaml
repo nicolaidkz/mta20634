@@ -10,6 +10,7 @@ ScriptsOnlyBuild:
     - KeySquenceInput
     - LoggingManager
     - MainMenu
+    - NameSaver
     - OpenBCIInput
     - ProgressIndication
     - Utils
@@ -69,6 +70,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.HorizontalLayoutGroup
     - UnityEngine.UI.Image
+    - UnityEngine.UI.InputField
     - UnityEngine.UI.LayoutElement
     - UnityEngine.UI.Mask
     - UnityEngine.UI.ScrollRect
@@ -529,6 +531,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13442}
     - Class: 114
+      Script: {instanceID: 13464}
+    - Class: 114
       Script: {instanceID: 13504}
     - Class: 114
       Script: {instanceID: 13508}
@@ -576,6 +580,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 14826}
     - Class: 114
       Script: {instanceID: 14832}
+    - Class: 114
+      Script: {instanceID: 20836}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1499,6 +1505,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: cd515589f32c0248cca95ae065a027e3
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NameSaver
   platform: 5
   scenePathNames:
   - Assets/Scenes/Start.unity
@@ -1506,4 +1518,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/Staggered.unity
   - Assets/Scenes/None.unity
   - Assets/Scenes/End.unity
-  playerPath: C:/Users/ckrit/Desktop/SKATERTEST/BCIce Skater.exe
+  playerPath: C:/Users/madsa/Desktop/New folder (2)/BCIce Skater.exe
