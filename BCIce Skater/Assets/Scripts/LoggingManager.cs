@@ -100,7 +100,6 @@ public class LoggingManager : MonoBehaviour
         logCollection["GameState"].Add(System.Enum.GetName(typeof(GameState), gameData.gameState));
         logCollection["GameScenario"].Add(GameObject.Find("DifficultyAdjuster").GetComponent<speedAdjustment>().Scenario.ToString());
         logCollection["Precision"].Add(GameObject.Find("DifficultyAdjuster").GetComponent<speedAdjustment>().lastPrecision.ToString());
-        logCollection["ThreePrecision"].Add(GameObject.Find("DifficultyAdjuster").GetComponent<speedAdjustment>().lastThreePrecision.ToString());
         logCollection["FabAlarmFixationPoint"].Add(gameData.noInputReceivedFabAlarm.ToString());
         logCollection["FabAlarmVariability"].Add(gameData.fabAlarmVariability.ToString());
         FillKeySequenceColumns();
