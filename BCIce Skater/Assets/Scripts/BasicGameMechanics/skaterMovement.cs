@@ -156,6 +156,7 @@ public class skaterMovement : MonoBehaviour
         {
             // Log what needs to be logged
             GameObject.Find("LoggingManager").GetComponent<LoggingManager>().SendLogs();
+            GetComponent<Animations>().ToggleIsRunning();
             if (SceneManager.GetActiveScene().name == "Constant")
             {
                 SceneManager.LoadScene("Staggered");

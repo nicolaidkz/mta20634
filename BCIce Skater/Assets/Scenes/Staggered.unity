@@ -5784,10 +5784,10 @@ RectTransform:
   m_Father: {fileID: 7659587501750675514}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1738.5, y: 50}
+  m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &379162220
 MonoBehaviour:
@@ -5807,8 +5807,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Expirement 1/3 complete. Please fill out the next part of the questionaire
-    and press 'START EXPERIMENT' after, when ready.
+  m_text: Thank you! Part 1/3 complete. Fill out the first part of the survey and
+    then press 'START EXPERIMENT' bottom left to begin experiment.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5853,7 +5853,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 92
+  m_firstOverflowCharacterIndex: 109
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -5877,10 +5877,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 379162220}
-    characterCount: 122
+    characterCount: 134
     spriteCount: 0
-    spaceCount: 18
-    wordCount: 20
+    spaceCount: 22
+    wordCount: 24
     linkCount: 0
     lineCount: 2
     pageCount: 1
@@ -20336,7 +20336,7 @@ MonoBehaviour:
   Scenario: 1
   trialHistory: []
   lastPrecision: 0
-  lastPrecisions: []
+  lastThreePrecision: []
 --- !u!4 &1599748592
 Transform:
   m_ObjectHideFlags: 0
@@ -26474,7 +26474,7 @@ PrefabInstance:
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: interTrialIntervalSeconds
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
@@ -26484,7 +26484,7 @@ PrefabInstance:
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: trials
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
