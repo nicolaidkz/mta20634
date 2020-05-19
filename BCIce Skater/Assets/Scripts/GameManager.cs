@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
     public float inputWindowTimer = 0.0f;
     public float interTrialTimer = 0.0f;
 
-    private GameState gameState = GameState.Stopped;
+    public GameState gameState = GameState.Stopped;
 
     [Serializable]
     public class OnGameStateChanged : UnityEvent<GameData> { }

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5519,7 +5519,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 305, y: -330}
+  m_AnchoredPosition: {x: 305, y: -58}
   m_SizeDelta: {x: 310.30005, y: 61.599976}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &340833284
@@ -5807,7 +5807,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press 'START EXPERIMENT' bottom left to begin experiment.
+  m_text: 'Please familiarize yourself with the layout. Once the black line is within
+    the green section on the upper left, you must input the listed key-sequence as
+    fast as possible.
+
+
+    Press ''START EXPERIMENT'' bottom left to begin experiment.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5852,7 +5857,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
+  m_firstOverflowCharacterIndex: 79
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -5873,15 +5878,15 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 199.9505, y: 0, z: 215.81972, w: 0}
   m_textInfo:
     textComponent: {fileID: 379162220}
-    characterCount: 57
+    characterCount: 230
     spriteCount: 0
-    spaceCount: 7
-    wordCount: 8
+    spaceCount: 37
+    wordCount: 37
     linkCount: 0
-    lineCount: 1
+    lineCount: 5
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -19059,7 +19064,6 @@ MonoBehaviour:
   Fail: {fileID: 54380497}
   Win2: {fileID: 226710555}
   Alert: {fileID: 1379986887}
-  endExp: {fileID: 7659587501414214927}
   endText: {fileID: 0}
 --- !u!54 &1482798367
 Rigidbody:
@@ -20331,6 +20335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   decreaseT: 1.2
   increaseT: 1.2
+  IncreaseTs: 1.28
   unit: 0.5
   inputUnit: 0.2
   Scenario: 0
@@ -26484,7 +26489,7 @@ PrefabInstance:
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: trials
-      value: 5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
@@ -28434,7 +28439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.21960784}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -28644,13 +28649,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.25882354}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 0}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

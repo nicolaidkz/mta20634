@@ -12,7 +12,7 @@ public class skaterMovement : MonoBehaviour
     private bool correctInput = false; // To keep track of correct BCI input
     private Vector3 incorrectPos;
     private bool collided = false;
-    private float turnDistance = 0.001f;
+    private float turnDistance = 0.00001f;
     private bool fail = false;
 
     public float distancetoIncorrect = 3;
@@ -83,10 +83,12 @@ public class skaterMovement : MonoBehaviour
                 fail = true;
                 SetDestination(incorrectPos, 2);
                 check2 = true;
-                gameManager.SendMessage("PauseTrial");
                 GameObject.Find("failSound").GetComponent<AudioSource>().PlayOneShot(GameObject.Find("failSound").GetComponent<AudioSource>().clip);
                 //GameObject.Find("KeySequencer").SendMessage("TurnRed"); for this to work, it needs to be a coRoutine that shines red for some amount of time...
                 GameObject.Find("DifficultyAdjuster").SendMessage("InputRejected");
+                windowTimer = 0;
+                gameManager.GetComponent<GameManager>().interTrialTimer = 0;
+                gameManager.SendMessage("PauseTrial");
                 StartCoroutine(Signal(Fail));
             }
             if ((Vector2.Distance(transform.position, incorrectPos) < turnDistance && fail && !check3) || (collided && !check3))
@@ -162,6 +164,7 @@ public class skaterMovement : MonoBehaviour
         {
             // Log what needs to be logged
             GameObject.Find("LoggingManager").GetComponent<LoggingManager>().SendLogs();
+            Animations.rotate = false;
             GetComponent<Animations>().ToggleIsRunning();
             if (SceneManager.GetActiveScene().name == "Constant")
             {
@@ -173,7 +176,7 @@ public class skaterMovement : MonoBehaviour
             }
             if (SceneManager.GetActiveScene().name == "None")
             {
-                endText.SetActive(true);
+                SceneManager.LoadScene("End");
 
             }
         }

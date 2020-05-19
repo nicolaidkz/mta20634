@@ -5,7 +5,7 @@ using UnityEngine;
 public class speedAdjustment : MonoBehaviour
 {
     public enum AdjustmentType { Constant, Staggered, None }
-    public float decreaseT = 1.8f, increaseT = 1.28f;
+    public float decreaseT = 1.8f, increaseT = 1.28f, IncreaseTs = 1.28f;
     public float unit = 0.5f, inputUnit = 0.3f;
     private float intervalMin = 2f, intervalMax= 10f, inputMin = 0.5f, inputMax = 3f;
     public AdjustmentType Scenario;
@@ -22,6 +22,7 @@ public class speedAdjustment : MonoBehaviour
     void Update() 
     {
         increaseT = GM.GetComponent<GameManager>().inputWindowSeconds / 2;
+        IncreaseTs = GM.GetComponent<GameManager>().inputWindowSeconds;
         //decreaseT = (GM.GetComponent<GameManager>().inputWindowSeconds / 3) * 2;
     }
     public void InputAccepted(float timeSinceWindowStart)
@@ -49,6 +50,37 @@ public class speedAdjustment : MonoBehaviour
                 float lastTrialPrecision = trialHistory[trialHistory.Count - 1]; // last trial precision for comparison
                 if (lastTrialPrecision != 0)
                 {
+                    if (lastTrialPrecision < IncreaseTs)
+                    {
+                        Debug.Log("increase!");
+
+
+                        float ItIs = GM.GetComponent<GameManager>().interTrialIntervalSeconds;
+                        if (ItIs - unit/2 >= intervalMin)
+                        {
+                            //GM.GetComponent<GameManager>().interTrialIntervalSeconds -= unit;
+                            GM.GetComponent<GameManager>().SetInterTrialSeconds(GM.GetComponent<GameManager>().interTrialIntervalSeconds -= unit/2);
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", (ItIs - unit/2));
+                        }
+                        else
+                        {
+                            GM.GetComponent<GameManager>().SetInterTrialSeconds(intervalMin);
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateIntertrialWindow", intervalMin);
+                        }
+                        float InS = GM.GetComponent<GameManager>().inputWindowSeconds;
+                        if (InS - inputUnit/2 >= inputMin/2)
+                        {
+                            //GM.GetComponent<GameManager>().inputWindowSeconds -= inputUnit;
+                            GM.GetComponent<GameManager>().SetInputWindowSeconds(GM.GetComponent<GameManager>().inputWindowSeconds -= inputUnit/2);
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", (InS - inputUnit/2));
+                        }
+                        else
+                        {
+                            GM.GetComponent<GameManager>().SetInputWindowSeconds(inputMin);
+                            GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", inputMin);
+                        }
+                    }
+                                                                                                                                                                              
                     if (lastTrialPrecision < increaseT)
                     {
                         Debug.Log("increase!");
@@ -83,7 +115,6 @@ public class speedAdjustment : MonoBehaviour
                     {
                         Debug.Log("within parameters, no changes made");
                     }
-
                     break;
                 }
                 else 
@@ -242,8 +273,6 @@ public class speedAdjustment : MonoBehaviour
                 // this part of the code is unreachable, if you see this error message, get to a phone!
                 break;
         }
-
-
     }
 
     float AverageBetween(float one, float two, float three)

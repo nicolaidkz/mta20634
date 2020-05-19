@@ -17,7 +17,15 @@ public class LoggingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        filepath = Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+        filepath = Application.dataPath;
+        if (Application.platform == RuntimePlatform.OSXPlayer)
+        {
+            filepath += "/../../";
+        }
+        else if (Application.platform == RuntimePlatform.WindowsPlayer)
+        {
+            filepath += "/../";
+        }
         logCollection = new Dictionary<string, List<string>>();
         logCollection["Date"] = new List<string>();
         logCollection["Timestamp"] = new List<string>();
