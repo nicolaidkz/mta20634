@@ -52,6 +52,7 @@ public class LoggingManager : MonoBehaviour
         logCollection["InputConfidence"] = new List<string>();
         logCollection["InputValidity"] = new List<string>();
         logCollection["InputType"] = new List<string>();
+        logCollection["Precision"] = new List<string>();
         logCollection["InputNumber"] = new List<string>();
     }
 
@@ -97,6 +98,8 @@ public class LoggingManager : MonoBehaviour
         logCollection["InputWindowSeconds"].Add(gameData.inputWindowSeconds.ToString());
         logCollection["GameState"].Add(System.Enum.GetName(typeof(GameState), gameData.gameState));
         logCollection["GameScenario"].Add(GameObject.Find("DifficultyAdjuster").GetComponent<speedAdjustment>().Scenario.ToString());
+        logCollection["LastPrecision"].Add(GameObject.Find("DifficultyAdjuster").GetComponent<speedAdjustment>().lastPrecision.ToString());
+        logCollection["LastThreePrecision"].Add(GameObject.Find("DifficultyAdjuster").GetComponent<speedAdjustment>().lastPrecisions.ToString());
         logCollection["FabAlarmFixationPoint"].Add(gameData.noInputReceivedFabAlarm.ToString());
         logCollection["FabAlarmVariability"].Add(gameData.fabAlarmVariability.ToString());
         FillKeySequenceColumns();

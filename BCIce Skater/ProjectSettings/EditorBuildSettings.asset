@@ -13,8 +13,14 @@ EditorBuildSettings:
     guid: 165dbca6ac9e4e146a94fa1e5196dbc1
   - enabled: 1
     path: Assets/Scenes/Staggered.unity
-    guid: 4c2bcd8df0bcd2c4d904c148fff2da4d
+    guid: 7f6da283315034a45981cf62e0caa47a
   - enabled: 1
     path: Assets/Scenes/None.unity
-    guid: 1ddf820ab529347439645ec10820003e
+    guid: 4ff85d6ada6a85f4a9a3464d96ffa2f2
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}

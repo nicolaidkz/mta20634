@@ -11,6 +11,8 @@ public class speedAdjustment : MonoBehaviour
     public AdjustmentType Scenario;
     public List<float> trialHistory = new List<float>();
     GameObject GM;
+    public float lastPrecision;
+    public float[] lastPrecisions;
 
     void Start()
     {
@@ -44,6 +46,7 @@ public class speedAdjustment : MonoBehaviour
         {
             case AdjustmentType.Constant:
                 float lastTrialPrecision = trialHistory[trialHistory.Count - 1]; // last trial precision for comparison
+                lastPrecision = lastTrialPrecision;
                 if (lastTrialPrecision != 0)
                 {
                     if (lastTrialPrecision < increaseT)
@@ -117,6 +120,7 @@ public class speedAdjustment : MonoBehaviour
 
             case AdjustmentType.Staggered:
                 float[] lastTrialPrecisions = new float[3]; // last three precisions for comparison
+                lastPrecisions = lastTrialPrecisions;
                 if (trialHistory.Count >= 3)
                 {
                     for (int i = 0; i < 3; i++)
