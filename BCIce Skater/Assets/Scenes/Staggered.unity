@@ -19129,6 +19129,7 @@ MonoBehaviour:
   Fail: {fileID: 54380497}
   Win2: {fileID: 226710555}
   Alert: {fileID: 1379986887}
+  endExp: {fileID: 7659587501414214927}
   endText: {fileID: 0}
 --- !u!54 &1482798367
 Rigidbody:
@@ -26553,7 +26554,7 @@ PrefabInstance:
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: trials
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
@@ -29084,7 +29085,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
+        m_CallState: 0
       - m_Target: {fileID: 7659587502026270861}
         m_MethodName: SetActive
         m_Mode: 6

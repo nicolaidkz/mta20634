@@ -36,9 +36,9 @@ public class skaterMovement : MonoBehaviour
 
     private bool star;
 
-    private float windowTimer;
-
     public GameObject endText;
+
+    private float windowTimer;
     // Start is called before the first frame update
     void Start()
     {
@@ -174,6 +174,7 @@ public class skaterMovement : MonoBehaviour
             if (SceneManager.GetActiveScene().name == "None")
             {
                 endText.SetActive(true);
+
             }
         }
     }

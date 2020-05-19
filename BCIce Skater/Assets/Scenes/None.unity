@@ -10822,8 +10822,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Part 3/3 complete. Please fill out the next part of the questionnaire and
-    then press. Thank you!
+  m_text: Part 3/3 complete. Please fill out the final parts of the questionnaire.
+    Thank you!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -19216,7 +19216,7 @@ MonoBehaviour:
   Fail: {fileID: 54380497}
   Win2: {fileID: 226710555}
   Alert: {fileID: 1379986887}
-  endText: {fileID: 0}
+  endText: {fileID: 853539685}
 --- !u!54 &1482798367
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -26709,7 +26709,7 @@ PrefabInstance:
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
       propertyPath: trials
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1668599597581130350, guid: f05850ea4697c9a49a94cd0c0a584659,
         type: 3}
@@ -28722,7 +28722,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 845.5, y: 45.99994}
+  m_AnchoredPosition: {x: 845.5, y: 46}
   m_SizeDelta: {x: 1691, y: 90.400024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7659587501741522830
@@ -29119,7 +29119,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.049560547}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: -0.11279}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7659587502013183854
@@ -29241,7 +29241,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
+        m_CallState: 0
       - m_Target: {fileID: 7659587502026270861}
         m_MethodName: SetActive
         m_Mode: 6
