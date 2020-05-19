@@ -68,7 +68,7 @@ public class skaterMovement : MonoBehaviour
                 OnTargetPosChanged();
                 SetDestination(targetPos.transform.position, timeofWindow);
                 check1 = false; check2 = false; check3 = false;
-                if (star == true) StartCoroutine(Signal(Win2));
+                if (star == true) { StartCoroutine(Signal(Win2)); GameObject.Find("winSound").GetComponent<AudioSource>().PlayOneShot(GameObject.Find("winSound").GetComponent<AudioSource>().clip); }
                 star = false;
                 //GameObject.Find("KeySequencer").SendMessage("TurnGreen"); for this to work, it needs to be a coRoutine that shines green for some amount of time...
                 gameManager.GetComponent<GameManager>().interTrialTimer = 0;
@@ -84,6 +84,7 @@ public class skaterMovement : MonoBehaviour
                 SetDestination(incorrectPos, 2);
                 check2 = true;
                 gameManager.SendMessage("PauseTrial");
+                GameObject.Find("failSound").GetComponent<AudioSource>().PlayOneShot(GameObject.Find("failSound").GetComponent<AudioSource>().clip);
                 //GameObject.Find("KeySequencer").SendMessage("TurnRed"); for this to work, it needs to be a coRoutine that shines red for some amount of time...
                 GameObject.Find("DifficultyAdjuster").SendMessage("InputRejected");
                 StartCoroutine(Signal(Fail));
@@ -137,6 +138,11 @@ public class skaterMovement : MonoBehaviour
 
         targetPos = GameObject.Find("Point" + pointNr); // Set next point as target pos
         incorrectPos = targetPos.transform.position + ((targetPos.transform.position - transform.position).normalized * distancetoIncorrect); // arrange incorrectPos
+        //if (GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>().isPlaying) 
+        //{
+        //    GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>().Stop();
+        //}
+        //GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>().PlayOneShot(GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>().clip);
     }
 
     //public void OnGameStateChanged(GameData gameData)
@@ -180,7 +186,7 @@ public class skaterMovement : MonoBehaviour
     IEnumerator Signal(GameObject gameObject)
     {
         gameObject.SetActive(true);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         gameObject.SetActive(false);
     }
 }

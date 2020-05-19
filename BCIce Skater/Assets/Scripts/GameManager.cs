@@ -282,6 +282,7 @@ public class GameManager : MonoBehaviour
         GameData gameData = createGameData();
         onGameStateChanged.Invoke(gameData);
         player.GetComponent<skaterMovement>().enabled = true;
+        GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>().Play();
 
     }
 
