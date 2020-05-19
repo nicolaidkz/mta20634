@@ -35,6 +35,7 @@ public class speedAdjustment : MonoBehaviour
     {
         float precision = 0f;
         AddTrialEntry(precision);
+        
     }
     void AddTrialEntry(float input)
     {
@@ -114,6 +115,7 @@ public class speedAdjustment : MonoBehaviour
                     else if (lastTrialPrecision > increaseT)
                     {
                         Debug.Log("within parameters, no changes made");
+                        GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().ForceReDraw();
                     }
                     break;
                 }
@@ -223,6 +225,7 @@ public class speedAdjustment : MonoBehaviour
                             GM.GetComponent<GameManager>().SetInputWindowSeconds(inputMin);
                             GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", inputMin);
                         }
+                        GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().ForceReDraw();
                         break;
                     }
 
@@ -256,6 +259,7 @@ public class speedAdjustment : MonoBehaviour
                             GM.GetComponent<GameManager>().SetInputWindowSeconds(inputMax);
                             GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().SendMessage("UpdateInputWindow", inputMax);
                         }
+                        GameObject.Find("ProgressIndication").GetComponent<ProgressIndication>().ForceReDraw();
                         break;
                     }
                 }

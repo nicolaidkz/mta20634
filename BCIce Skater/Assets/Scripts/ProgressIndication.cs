@@ -43,7 +43,7 @@ public class ProgressIndication : MonoBehaviour
             float progress = gameTimers.interTrialTimer / progressBarDuration;
             float newPosition = progress * progressBar.sizeDelta.x;
             positionPusher.sizeDelta = new Vector2(newPosition, positionPusher.sizeDelta.y);
-            if(progress > 0.5f && progress < 0.501f)
+            if(progress > 0.5f && progress < 0.51f)
             {
                 GameObject.Find("Player").SendMessage("AlertSignal");
             }
@@ -69,13 +69,18 @@ public class ProgressIndication : MonoBehaviour
         progressBarDuration = interTrialDuration + inputWindowDuration;
         Debug.Log("updating interTrialDuration to: " + interTrialDuration);
         //recalculate visual size of input window.
-        float inputWindowRatio = inputWindowDuration / progressBarDuration;
-        float newInputWindowSize = inputWindowRatio * progressBar.sizeDelta.x;
-        inputWindow.sizeDelta = new Vector2(newInputWindowSize, inputWindow.sizeDelta.y);
+        ForceReDraw();
     }
     public void UpdateInputWindow(float newWindow) 
     {
         inputWindowDuration = newWindow;
-        UpdateIntertrialWindow(interTrialDuration); // reuse this to force redraw.
+        ForceReDraw(); // reuse this to force redraw.
+    }
+
+    public void ForceReDraw() 
+    {
+        float inputWindowRatio = inputWindowDuration / progressBarDuration;
+        float newInputWindowSize = inputWindowRatio * progressBar.sizeDelta.x;
+        inputWindow.sizeDelta = new Vector2(newInputWindowSize, inputWindow.sizeDelta.y);
     }
 }
