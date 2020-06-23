@@ -1,94 +1,196 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class skaterMovement : MonoBehaviour
 {
     private GameObject targetPos;
     GameObject incorrectPosMarker;
-    public float speed = 1f;
+    public float speed = 10f;
     private int pointNr = 1;
     private bool correctInput = false; // To keep track of correct BCI input
     private Vector3 incorrectPos;
     private bool collided = false;
-    private bool posSet = false;
-    public float turnDistance = 0.1f;
+    private float turnDistance = 0.00001f;
+    private bool fail = false;
 
+    public float distancetoIncorrect = 3;
+    float t;
+    Vector3 startPos;
+    Vector3 target;
+    public float timeToReachTarget;
+    public float timeofWindow;
+
+    private bool check1 = false;
+    private bool check2 = false;
+    private bool check3 = false;
+
+    private GameObject gameManager;
+
+    private GameObject directionSwitch;
+
+    public GameObject Fail;
+    public GameObject Win2;
+    public GameObject Alert;
+
+    private bool star;
+
+    public GameObject endText;
+
+    private float windowTimer;
     // Start is called before the first frame update
     void Start()
     {
+        GameObject.Find("StartText").SetActive(false);
+        directionSwitch = GameObject.Find("Player");
+        gameManager = GameObject.Find("GameManager");
+        startPos = target = transform.position;
         targetPos = GameObject.Find("Point" + pointNr); // Target Position Ice Skater will travel toward
-        incorrectPos = targetPos.transform.position + ((targetPos.transform.position - transform.position).normalized * 2);
-        incorrectPosMarker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        incorrectPosMarker.transform.position = incorrectPos;
+        incorrectPos = targetPos.transform.position + ((targetPos.transform.position - transform.position).normalized * distancetoIncorrect);
     }
     // Update is called once per frame
     void Update()
     {
-        
-        //Debug.Log(correctPos);
-        // if (Input.GetKeyDown("space"))
-        //  {
-        //      bciActivated(); // Run method for succesful BCI activation
-        // }
+        t += Time.deltaTime / timeToReachTarget;
+        transform.position = Vector3.Lerp(startPos, target, t);
 
-        if (!collided)
+        if (pointNr < gameManager.GetComponent<GameManager>().trials)
         {
-        transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), targetPos.transform.position, speed * Time.deltaTime); // Move Ice Skater toward target position
-        }
-        else
-        {
-            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), incorrectPos, speed * Time.deltaTime); // Move Ice Skater toward correct position
-        }
+            if (Vector2.Distance(transform.position, targetPos.transform.position) > turnDistance && !fail && !check1)
+            {
+                SetDestination(targetPos.transform.position, timeofWindow);
+                check1 = true;
+            }
+            else if (Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance && correctInput)
+            {
+                startPos = transform.position;
+                OnTargetPosChanged();
+                SetDestination(targetPos.transform.position, timeofWindow);
+                check1 = false; check2 = false; check3 = false;
+                if (star == true) { StartCoroutine(Signal(Win2)); GameObject.Find("winSound").GetComponent<AudioSource>().PlayOneShot(GameObject.Find("winSound").GetComponent<AudioSource>().clip); }
+                star = false;
+                //GameObject.Find("KeySequencer").SendMessage("TurnGreen"); for this to work, it needs to be a coRoutine that shines green for some amount of time...
+                gameManager.GetComponent<GameManager>().interTrialTimer = 0;
+                GameObject.Find("DifficultyAdjuster").SendMessage("InputAccepted", windowTimer);
+                windowTimer = 0;
+                gameManager.SendMessage("ResumeTrial");
 
-        if (Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance && correctInput == true) // If distance between Ice Skater and Target Pos is less than x
-        {
-            OnTargetPosChanged();
-            correctInput = false;
-            posSet = false;
-            speed = 1f;
+            }
+            else if (!correctInput && !check2 && Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance)
+            {
+                startPos = transform.position;
+                fail = true;
+                SetDestination(incorrectPos, 2);
+                check2 = true;
+                GameObject.Find("failSound").GetComponent<AudioSource>().PlayOneShot(GameObject.Find("failSound").GetComponent<AudioSource>().clip);
+                //GameObject.Find("KeySequencer").SendMessage("TurnRed"); for this to work, it needs to be a coRoutine that shines red for some amount of time...
+                GameObject.Find("DifficultyAdjuster").SendMessage("InputRejected");
+                windowTimer = 0;
+                gameManager.GetComponent<GameManager>().interTrialTimer = 0;
+                gameManager.SendMessage("PauseTrial");
+                StartCoroutine(Signal(Fail));
+            }
+            if ((Vector2.Distance(transform.position, incorrectPos) < turnDistance && fail && !check3) || (collided && !check3))
+            {
+                startPos = transform.position;
+                collided = true;
+                SetDestination(targetPos.transform.position, 2);
+                correctInput = true;
+                check3 = true;
+            }
         }
-
-        if (Vector2.Distance(transform.position, targetPos.transform.position) < turnDistance && correctInput == false) // If distance between Ice Skater and Target Pos is less than x
-        {
-            transform.position = Vector3.MoveTowards(transform.position,incorrectPos, speed * Time.deltaTime);
-            speed = 1f;
-        }
-        if (Vector2.Distance(transform.position, incorrectPos) < turnDistance) 
-        {
-            Vector3.Lerp(transform.position, targetPos.transform.position, 0.5f);
-            //correctInput = true;
-        }
-
-        //if (Vector2.Distance(transform.position, incorrectPos) < 0.1f && collided == true) // If distance between Ice Skater and incorrect Pos is less than x
-        //{
-        //    pointNr++; targetPos = GameObject.Find("Point" + pointNr); // Set next point as target pos
-        //    correctInput = false;
-        //    collided = false;
-        //    posSet = false;
-        //    speed = 1f;
-        //}
-
-
     }
 
-    void bciActivated()
+    public void SetDestination(Vector3 destination, float time)
+    {
+        t = 0;
+        startPos = transform.position;
+        timeToReachTarget = time;
+        target = destination;
+    }
+
+    void bciActivated(float inputWindowTimer)
     {
         Debug.Log("Direction Changed");
         correctInput = true;
+        star = true;
+        windowTimer = inputWindowTimer;
     }
 
     void OnTargetPosChanged() 
     {
-        pointNr++; targetPos = GameObject.Find("Point" + pointNr); // Set next point as target pos
-        incorrectPos = targetPos.transform.position + ((targetPos.transform.position - transform.position).normalized * 2); // arrange incorrectPos
-        incorrectPosMarker.transform.position = incorrectPos;
+        collided = false;
+        fail = false;
+        correctInput = false;
+        if (!Animations.rotate)
+        {
+            Animations.rotate = true;
+        }
+        else if (Animations.rotate)
+        {
+            Animations.rotate = false;
+        }
+        directionSwitch.GetComponent<Animations>().ToggleRotate();
+        pointNr++;
+        //if (pointNr > gameManager.GetComponent<GameManager>().trials)
+        //{
+          //  Debug.Log("test");
+        //}
+
+        targetPos = GameObject.Find("Point" + pointNr); // Set next point as target pos
+        incorrectPos = targetPos.transform.position + ((targetPos.transform.position - transform.position).normalized * distancetoIncorrect); // arrange incorrectPos
+        //if (GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>().isPlaying) 
+        //{
+        //    GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>().Stop();
+        //}
+        //GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>().PlayOneShot(GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>().clip);
     }
 
-    void OnTriggerEnter()
+    //public void OnGameStateChanged(GameData gameData)
+    //{
+    //    // Set InputWindow, InputTime indication.
+    //    timeofWindow = gameData.interTrialIntervalSeconds + gameData.inputWindowSeconds;
+    //}
+
+    public void UpdateTimeofWindow(float newDuration) 
     {
-        Debug.Log("test");
-        collided = true;
-        speed = 0.5f;
+        timeofWindow = newDuration;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "EndGame")
+        {
+            // Log what needs to be logged
+            GameObject.Find("LoggingManager").GetComponent<LoggingManager>().SendLogs();
+            Animations.rotate = false;
+            GetComponent<Animations>().ToggleIsRunning();
+            if (SceneManager.GetActiveScene().name == "Constant")
+            {
+                SceneManager.LoadScene("Staggered");
+            }
+            if (SceneManager.GetActiveScene().name == "Staggered")
+            {
+                SceneManager.LoadScene("None");
+            }
+            if (SceneManager.GetActiveScene().name == "None")
+            {
+                SceneManager.LoadScene("End");
+
+            }
+        }
+    }
+
+    public void AlertSignal()
+    {
+        StartCoroutine(Signal(Alert));
+    }
+
+    IEnumerator Signal(GameObject gameObject)
+    {
+        gameObject.SetActive(true);
+        yield return new WaitForSeconds(1);
+        gameObject.SetActive(false);
     }
 }

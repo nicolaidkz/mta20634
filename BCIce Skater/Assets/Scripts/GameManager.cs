@@ -74,10 +74,11 @@ public enum GamePolicy {
     MeetDesignGoals, // this is equivalent to Fab.Input.
     LooseOperation // this just accepts whatever input comes in regardless of validity.
 }
-
 public class GameManager : MonoBehaviour
 {
-
+    private GameObject player;
+    public GameObject Obstacle;
+    public GameObject EndGameCollider;
     // TODO for the future: Fixate fabricated input 1 second, 2 second, 3 second after the input attempt.
     //public enum FabInputDistance {
     //    TwoSecs,
@@ -90,8 +91,8 @@ public class GameManager : MonoBehaviour
     private List<SequenceData> CurrentSequences;
 
     // MTA20634
-
     public GameObject Player;
+    public bool window;
 
     [SerializeField]
     private float fabInputRate = 0.1f; // percentage, value between 0 - 1 (rounded up)
@@ -112,11 +113,12 @@ public class GameManager : MonoBehaviour
     private float startPolicyReview = 0.2f; // percentage of trials which should pass before we start reviewing policy.
 
     [SerializeField]
-    private int trials = 20;
+    public int trials = 20;
 
     private InputTypes currentInputDecision = InputTypes.RejectAllInput;
 
     private int currentTrial;
+
 
     [SerializeField]
     private GamePolicy gamePolicy = GamePolicy.MeetDesignGoals;
@@ -124,13 +126,13 @@ public class GameManager : MonoBehaviour
     private InputWindowState inputWindow = InputWindowState.Closed;
 
     [SerializeField]
-    private float interTrialIntervalSeconds = 4.5f;
+    public float interTrialIntervalSeconds = 4.5f;
     [SerializeField]
-    private float inputWindowSeconds = 1f;
-    private float inputWindowTimer = 0.0f;
-    private float interTrialTimer = 0.0f;
+    public float inputWindowSeconds = 1f;
+    public float inputWindowTimer = 0.0f;
+    public float interTrialTimer = 0.0f;
 
-    private GameState gameState = GameState.Stopped;
+    public GameState gameState = GameState.Stopped;
 
     [Serializable]
     public class OnGameStateChanged : UnityEvent<GameData> { }
@@ -157,6 +159,8 @@ public class GameManager : MonoBehaviour
         designedInputOrder = new List<InputTypes>();
         actualInputOrder = new List<InputTypes>();
         UpdateDesignedInputOrder();
+        player = GameObject.Find("Player");
+        createPoints();
 
     }
 
@@ -165,6 +169,7 @@ public class GameManager : MonoBehaviour
     {
         if (gameState == GameState.Running) {
             if (inputWindow == InputWindowState.Closed) {
+                window = false;
                 interTrialTimer += Time.deltaTime;
                 if (interTrialTimer > interTrialIntervalSeconds && actualInputOrder.Count < trials) {
                     interTrialTimer = 0f;
@@ -175,6 +180,7 @@ public class GameManager : MonoBehaviour
                     EndGame();
                 }
             } else if (inputWindow == InputWindowState.Open) {
+                window = true;
                 //Debug.Log("inputwindow is open");
                 inputWindowTimer += Time.deltaTime;
                 if (inputWindowTimer > currentFabAlarm && alarmFired == false) {
@@ -187,6 +193,7 @@ public class GameManager : MonoBehaviour
                     // The input window expired
                     MakeInputDecision(null, true);
                     alarmFired = false;
+                    GameObject.Find("InputManager").SendMessage("ResetUI");
                 }
             }
         }
@@ -194,6 +201,14 @@ public class GameManager : MonoBehaviour
         gameTimers.interTrialTimer = interTrialTimer;
         gameTimers.inputWindowTimer = inputWindowTimer;
         onGameTimeUpdate.Invoke(gameTimers);
+        //if (Player.GetComponent<skaterMovement>().timeToReachTarget != interTrialIntervalSeconds + inputWindowSeconds)
+        //{
+        //    onGameStateChanged.Invoke(createGameData());
+        //}
+        if (Player.GetComponent<skaterMovement>().timeToReachTarget != interTrialIntervalSeconds + inputWindowSeconds) 
+        {
+            Player.GetComponent<skaterMovement>().SendMessage("UpdateTimeofWindow", interTrialIntervalSeconds+inputWindowSeconds);
+        }
     }
 
     public void setFabAlarmVariability() {
@@ -220,7 +235,7 @@ public class GameManager : MonoBehaviour
         // TODO: Take actualInputOrder into account.
         // Count the actual input so far.
         int trialsEnded = actualInputOrder.Count;
-        int fabTrialsEnded = actualInputOrder.Count(c => c == InputTypes.FabInput);
+        int fabTrialsEnded = actualInputOrder.Count(c => c == InputTypes.RejectAllInput);
         int accTrialsEnded = actualInputOrder.Count(c => c == InputTypes.AcceptAllInput);
         int rejTrialsEnded = actualInputOrder.Count(c => c == InputTypes.RejectAllInput);
 
@@ -235,7 +250,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("accTrials: " + accTrials + ", ended: " + accTrialsEnded + ", new target amount: " + accTrialsTarget);
 
         for (int i = 0; i < fabTrialsTarget; i++) {
-            designedInputOrder.Add(InputTypes.FabInput);
+            designedInputOrder.Add(InputTypes.RejectAllInput);
         }
 
         for (int i = 0; i < accTrialsTarget; i++) {
@@ -266,6 +281,8 @@ public class GameManager : MonoBehaviour
         gameState = GameState.Running;
         GameData gameData = createGameData();
         onGameStateChanged.Invoke(gameData);
+        player.GetComponent<skaterMovement>().enabled = true;
+        GameObject.Find("SoundManager").GetComponentInChildren<AudioSource>().Play();
 
     }
 
@@ -340,7 +357,6 @@ public class GameManager : MonoBehaviour
         } 
 
 
-
         // update Game Policy
         GamePolicyData gamePolData = new GamePolicyData();
         gamePolData.gamePolicy = gamePolicy;
@@ -366,7 +382,7 @@ public class GameManager : MonoBehaviour
                     } else if (inputData.validity == InputValidity.Accepted) {
                         currentInputDecision  = InputTypes.AcceptAllInput;
                         Debug.Log("Case: StrictOperation, Correct Sequence Played.");
-                        CloseInputWindow();
+                        //CloseInputWindow();
                     } else if (inputData.validity == InputValidity.Rejected) {
                         currentInputDecision  = InputTypes.RejectAllInput;
                         Debug.Log("Case: StrictOperation, Input Incorrect."); // + System.Enum.GetName(typeof(SequenceSpeed), sequenceData.sequenceSpeed) + ", " + System.Enum.GetName(typeof(SequenceComposition), sequenceData.sequenceComposition));
@@ -375,11 +391,14 @@ public class GameManager : MonoBehaviour
                 if (designedInputOrder.First() == InputTypes.AcceptAllInput) {
                     if (inputData.validity == InputValidity.Accepted) {
                         currentInputDecision = InputTypes.AcceptAllInput;       // INPUT ACCEPTED HERE
-                        Player.SendMessage("bciActivated");
-                        CloseInputWindow();
+                        Player.SendMessage("bciActivated", inputWindowTimer);
+                        Debug.Log("Correct sequence at: " + inputWindowTimer);
+                        //GameObject.Find("DifficultyAdjuster").SendMessage("InputAccepted", inputWindowTimer);
+                        //CloseInputWindow();
                     } else if (inputData.validity == InputValidity.Accepted) {
                         // Recycles the AcceptAllInput
-                        currentInputDecision = InputTypes.RejectAllInput;
+                        //currentInputDecision = InputTypes.RejectAllInput;       // BUG? REJECTS ALL INPUT IMMEDIATELY AFTER ACCEPTING INPUT
+                        GameObject.Find("DifficultyAdjuster").SendMessage("InputRejected");
                     }
                     Debug.Log("Case: MeetDesignGoals, We should Accept this input if it is valid.");
                 } else if (designedInputOrder.First() == InputTypes.RejectAllInput) {
@@ -393,8 +412,9 @@ public class GameManager : MonoBehaviour
         } else if (inputData == null && windowExpired) {
             // if this is in response to that the input window has expired,
             // then we submit a Rejection.
-            currentInputDecision = InputTypes.RejectAllInput;
-            Debug.Log("Case: Input Window Expired, Rejecting.");
+            //currentInputDecision = InputTypes.RejectAllInput;
+            //Debug.Log("Case: Input Window Expired, Rejecting.");
+
             CloseInputWindow();
         } else if (inputData == null && designedInputOrder.First() == InputTypes.FabInput) {
             // if this is in response to an alarm that we dont receive any input,
@@ -430,6 +450,23 @@ public class GameManager : MonoBehaviour
         interTrialIntervalSeconds = time;
         GameData gameData = createGameData();
         onGameStateChanged.Invoke(gameData);
+    }
+
+    private Vector3 pointCoords = new Vector3(4.8f, -10, 0);
+
+    public void createPoints()
+    {
+        Instantiate(EndGameCollider, new Vector3(0, 0, 0), Quaternion.identity);
+        for (int i = 2; i < trials + 1; i++)
+        {
+            var go = new GameObject("Point"+i);
+            GameObject.Find("Point" + i).transform.parent = GameObject.Find("Points").transform;
+            GameObject.Find("Point"+i).transform.position = pointCoords;
+            GameObject.Find("EndGameCollider(Clone)").transform.position = pointCoords;
+            pointCoords += new Vector3(0, -10, 0);
+            pointCoords.x *= -1;
+            Instantiate(Obstacle, new Vector3(0, -10*i, 0), Quaternion.identity);
+        }
     }
 
 }

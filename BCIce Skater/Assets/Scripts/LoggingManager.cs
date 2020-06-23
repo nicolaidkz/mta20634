@@ -17,7 +17,17 @@ public class LoggingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        filepath = Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+        filename = NameSaving.playerName;
+
+        filepath = Application.dataPath;
+        if (Application.platform == RuntimePlatform.OSXPlayer)
+        {
+            filepath += "/../../";
+        }
+        else if (Application.platform == RuntimePlatform.WindowsPlayer)
+        {
+            filepath += "/../";
+        }
         logCollection = new Dictionary<string, List<string>>();
         logCollection["Date"] = new List<string>();
         logCollection["Timestamp"] = new List<string>();
@@ -42,6 +52,7 @@ public class LoggingManager : MonoBehaviour
         logCollection["InterTrialIntervalSeconds"] = new List<string>();
         logCollection["InputWindowSeconds"] = new List<string>();
         logCollection["GameState"] = new List<string>();
+        logCollection["GameScenario"] = new List<string>();
         logCollection["GamePolicy"] = new List<string>();
         logCollection["CurrentRecognitionRate"] = new List<string>();
         logCollection["FabAlarmFixationPoint"] = new List<string>();
@@ -51,6 +62,8 @@ public class LoggingManager : MonoBehaviour
         logCollection["InputConfidence"] = new List<string>();
         logCollection["InputValidity"] = new List<string>();
         logCollection["InputType"] = new List<string>();
+        logCollection["Precision"] = new List<string>();
+        logCollection["ThreePrecision"] = new List<string>();
         logCollection["InputNumber"] = new List<string>();
     }
 
@@ -95,13 +108,15 @@ public class LoggingManager : MonoBehaviour
         logCollection["InterTrialIntervalSeconds"].Add(gameData.interTrialIntervalSeconds.ToString());
         logCollection["InputWindowSeconds"].Add(gameData.inputWindowSeconds.ToString());
         logCollection["GameState"].Add(System.Enum.GetName(typeof(GameState), gameData.gameState));
+        logCollection["GameScenario"].Add(GameObject.Find("DifficultyAdjuster").GetComponent<speedAdjustment>().Scenario.ToString());
+        logCollection["Precision"].Add(GameObject.Find("DifficultyAdjuster").GetComponent<speedAdjustment>().lastPrecision.ToString());
         logCollection["FabAlarmFixationPoint"].Add(gameData.noInputReceivedFabAlarm.ToString());
         logCollection["FabAlarmVariability"].Add(gameData.fabAlarmVariability.ToString());
         FillKeySequenceColumns();
         FillKeys();
 
         if (gameData.gameState == GameState.Stopped) {
-            SendLogs();
+            //SendLogs(); // TOGGLE LOGS HERE (MOVED TO SKATERMOVEMENT.CS)
         }
     }
 
